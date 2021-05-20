@@ -4,7 +4,15 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
+- none
+
+schedules:
+- cron: "0 3 * * *"
+  displayName: nightly build
+  branches:
+    include: 
+    - develop
+  always: true
 
 pool:
   name: 'Default'
