@@ -15,6 +15,7 @@ using System.Xml;
 using System.Xml.Schema;
 using ING.iDealAdvanced.Data;
 using ING.iDealAdvanced.Messages;
+using Microsoft.Win32.SafeHandles;
 
 /// <summary>
 /// ING.iDealAdvanced connector
@@ -670,33 +671,17 @@ namespace ING.iDealAdvanced
         /// <exception cref="ConfigurationErrorsException">Number of certificates found is not exactly one.</exception>
         internal static X509Certificate2 GetCertificate(string subjectOrThumbprint)
         {
-            WindowsImpersonationContext context = null;
+            X509Certificate2 cert = null;
 
-            try
-            {
-                // If the website is using impersonation use the configured Application Pool
-                // account to access the certificate store.
-                using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
+            WindowsIdentity.RunImpersonated(
+                SafeAccessTokenHandle.InvalidHandle,
+                () =>
                 {
-                    if (windowsIdentity != null)
-                    {
-                        TokenImpersonationLevel impersonationLevel = windowsIdentity.ImpersonationLevel;
-
-                        if (impersonationLevel == TokenImpersonationLevel.Delegation ||
-                            impersonationLevel == TokenImpersonationLevel.Impersonation)
-                        {
-                            context = WindowsIdentity.Impersonate(IntPtr.Zero);
-                        }
-                    }
-
-                    return TryGetCertificateFromStore(subjectOrThumbprint);
+                    cert = TryGetCertificateFromStore(subjectOrThumbprint);
                 }
-            }
-            finally
-            {
-                if (context != null)
-                    context.Undo();
-            }
+            );
+
+            return cert;
         }
 
         internal static X509Certificate2 TryGetCertificateFromStore(string subjectOrThumbprint)
