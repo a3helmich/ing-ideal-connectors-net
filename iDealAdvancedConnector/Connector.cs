@@ -670,7 +670,6 @@ namespace ING.iDealAdvanced
         /// <exception cref="ConfigurationErrorsException">Number of certificates found is not exactly one.</exception>
         internal static X509Certificate2 GetCertificate(string subjectOrThumbprint)
         {
-            return TryGetCertificateFromStore(subjectOrThumbprint);
             WindowsImpersonationContext context = null;
 
             try
