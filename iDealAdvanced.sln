@@ -5,6 +5,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1FA3D355-B84E-4AF8-9DFC-B81E54C1CD61}"
 	ProjectSection(SolutionItems) = preProject
 		AssemblyInfo.Global.cs = AssemblyInfo.Global.cs
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iDealAdvancedConnector", "iDealAdvancedConnector\iDealAdvancedConnector.csproj", "{31C95E7E-5796-4EBF-A0F0-346850E6FA78}"

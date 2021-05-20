@@ -670,6 +670,7 @@ namespace ING.iDealAdvanced
         /// <exception cref="ConfigurationErrorsException">Number of certificates found is not exactly one.</exception>
         internal static X509Certificate2 GetCertificate(string subjectOrThumbprint)
         {
+            return TryGetCertificateFromStore(subjectOrThumbprint);
             WindowsImpersonationContext context = null;
 
             try
@@ -678,7 +679,6 @@ namespace ING.iDealAdvanced
                 // account to access the certificate store.
                 using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
                 {
-
                     if (windowsIdentity != null)
                     {
                         TokenImpersonationLevel impersonationLevel = windowsIdentity.ImpersonationLevel;
@@ -690,37 +690,41 @@ namespace ING.iDealAdvanced
                         }
                     }
 
-                    using (X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
-                    {
-                        store.Open(OpenFlags.ReadOnly);
-
-                        // Change: Product Backlog Item 10247: .NET Connector - support loading certificate by Thumbprint
-                        // By default find certificates using SubjectName
-                        X509FindType findType = X509FindType.FindBySubjectName;
-
-                        // Check to see if finding certificates by Thumbprint is activated in the configuration settings
-                        var findCertificatesByThumbprint =
-                            GetOptionalAppSetting("FindCertificatesByThumbprint", "False");
-                        if (findCertificatesByThumbprint.ToLowerInvariant().Equals("true"))
-                            findType = X509FindType.FindByThumbprint;
-
-                        X509Certificate2Collection certs = store.Certificates.Find(findType, subjectOrThumbprint, false);
-                        if (certs.Count != 1)
-                        {
-                            string errMsg = Format("Found {0} certificates by subject/thumbprint {1}, expected 1.",
-                                certs.Count, subjectOrThumbprint);
-                            if (traceSwitch.TraceError) TraceLine(errMsg);
-                            throw new ConfigurationErrorsException(errMsg);
-                        }
-
-                        return certs[0];
-                    }
+                    return TryGetCertificateFromStore(subjectOrThumbprint);
                 }
             }
             finally
             {
                 if (context != null)
                     context.Undo();
+            }
+        }
+
+        internal static X509Certificate2 TryGetCertificateFromStore(string subjectOrThumbprint)
+        {
+            using (X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
+                store.Open(OpenFlags.ReadOnly);
+
+                // Change: Product Backlog Item 10247: .NET Connector - support loading certificate by Thumbprint
+                // By default find certificates using SubjectName
+                X509FindType findType = X509FindType.FindBySubjectName;
+
+                // Check to see if finding certificates by Thumbprint is activated in the configuration settings
+                var findCertificatesByThumbprint = GetOptionalAppSetting("FindCertificatesByThumbprint", "False");
+
+                if (findCertificatesByThumbprint.ToLowerInvariant().Equals("true"))
+                    findType = X509FindType.FindByThumbprint;
+
+                X509Certificate2Collection certs = store.Certificates.Find(findType, subjectOrThumbprint, false);
+                if (certs.Count != 1)
+                {
+                    string errMsg = Format("Found {0} certificates by subject/thumbprint {1}, expected 1.", certs.Count, subjectOrThumbprint);
+                    if (traceSwitch.TraceError) TraceLine(errMsg);
+                    throw new ConfigurationErrorsException(errMsg);
+                }
+
+                return certs[0];
             }
         }
 
