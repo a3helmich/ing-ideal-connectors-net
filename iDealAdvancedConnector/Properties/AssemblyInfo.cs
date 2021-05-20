@@ -18,3 +18,7 @@
 //[assembly: ComVisible(false)]
 
 //[assembly: CLSCompliant(true)]
+
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("iDealAdvancedConnector.Tests")]
