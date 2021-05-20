@@ -4,6 +4,7 @@
     <TargetFrameworks>net48</TargetFrameworks>
     <RootNamespace>ING.iDealAdvanced</RootNamespace>
     <AssemblyName>iDealAdvancedConnector</AssemblyName>
+    <AssemblyTitle>iDealAdvancedConnector</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>

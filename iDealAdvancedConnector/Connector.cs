@@ -668,26 +668,42 @@ namespace ING.iDealAdvanced
         /// <returns><see cref="X509Certificate2"/>.</returns>
         /// <exception cref="CryptographicException">Error getting certificate from the store.</exception>
         /// <exception cref="ConfigurationErrorsException">Number of certificates found is not exactly one.</exception>
-        private static X509Certificate2 GetCertificate(string subjectOrThumbprint)
+        internal static X509Certificate2 GetCertificate(string subjectOrThumbprint)
         {
+            return TryGetCertificateFromStore(subjectOrThumbprint);
             WindowsImpersonationContext context = null;
 
             try
             {
                 // If the website is using impersonation use the configured Application Pool
                 // account to access the certificate store.
-                WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
-                if (windowsIdentity != null)
+                using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
                 {
-                    TokenImpersonationLevel impersonationLevel = windowsIdentity.ImpersonationLevel;
-
-                    if (impersonationLevel == TokenImpersonationLevel.Delegation || impersonationLevel == TokenImpersonationLevel.Impersonation)
+                    if (windowsIdentity != null)
                     {
-                        context = WindowsIdentity.Impersonate(IntPtr.Zero);
-                    }
-                }                
+                        TokenImpersonationLevel impersonationLevel = windowsIdentity.ImpersonationLevel;
 
-                X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                        if (impersonationLevel == TokenImpersonationLevel.Delegation ||
+                            impersonationLevel == TokenImpersonationLevel.Impersonation)
+                        {
+                            context = WindowsIdentity.Impersonate(IntPtr.Zero);
+                        }
+                    }
+
+                    return TryGetCertificateFromStore(subjectOrThumbprint);
+                }
+            }
+            finally
+            {
+                if (context != null)
+                    context.Undo();
+            }
+        }
+
+        internal static X509Certificate2 TryGetCertificateFromStore(string subjectOrThumbprint)
+        {
+            using (X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
                 store.Open(OpenFlags.ReadOnly);
 
                 // Change: Product Backlog Item 10247: .NET Connector - support loading certificate by Thumbprint
@@ -695,10 +711,11 @@ namespace ING.iDealAdvanced
                 X509FindType findType = X509FindType.FindBySubjectName;
 
                 // Check to see if finding certificates by Thumbprint is activated in the configuration settings
-                var findCertificatesByThumbprint = GetOptionalAppSetting("FindCertificatesByThumbprint", "False");                                
+                var findCertificatesByThumbprint = GetOptionalAppSetting("FindCertificatesByThumbprint", "False");
+
                 if (findCertificatesByThumbprint.ToLowerInvariant().Equals("true"))
                     findType = X509FindType.FindByThumbprint;
-                
+
                 X509Certificate2Collection certs = store.Certificates.Find(findType, subjectOrThumbprint, false);
                 if (certs.Count != 1)
                 {
@@ -706,14 +723,8 @@ namespace ING.iDealAdvanced
                     if (traceSwitch.TraceError) TraceLine(errMsg);
                     throw new ConfigurationErrorsException(errMsg);
                 }
-                store.Close();
 
                 return certs[0];
-            }
-            finally
-            {
-                if (context != null)
-                    context.Undo();
             }
         }
 
