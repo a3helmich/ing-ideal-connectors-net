@@ -13,7 +13,7 @@ namespace ING.iDealAdvanced.Security
     /// <summary>
     /// This class is used to allow all certificates.
     /// </summary>
-    public class AcceptAllCertificates : System.Net.ICertificatePolicy
+    public class AcceptAllCertificates //: System.Net.ICertificatePolicy
     {
         /// <summary>
         /// Checks the validation result
@@ -36,7 +36,7 @@ namespace ING.iDealAdvanced.Security
     /// <summary>
     /// This class is used to allow all certificates.
     /// </summary>
-    public class AcceptSslCertificate : System.Net.ICertificatePolicy
+    public class AcceptSslCertificate //: System.Net.ICertificatePolicy
     {
         /// <summary>
         /// The X509Certificate
