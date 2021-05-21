@@ -21,7 +21,9 @@ namespace ING.iDealSample
         {
             // Remove these line if the webserver does not require a proxy to do outgoing http requests.
             ING.iDealAdvanced.XmlSignature.XmlSignature.RegisterSignatureAlghorighm();
-            System.Net.ServicePointManager.CertificatePolicy = new ING.iDealAdvanced.Security.AcceptAllCertificates();
+
+            //System.Net.ServicePointManager.CertificatePolicy = new ING.iDealAdvanced.Security.AcceptAllCertificates();
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
 
             if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["ProxyAddress"]))
             {

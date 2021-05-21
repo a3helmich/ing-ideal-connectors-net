@@ -712,7 +712,6 @@ namespace ING.iDealAdvanced
             }
         }
 
-
         /// <summary>
         /// Gets the merchant crypto service provider.
         /// </summary>

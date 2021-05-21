@@ -1,16 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48</TargetFrameworks>
+    <!--<TargetFrameworks>net48</TargetFrameworks>-->
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>ING.iDealAdvanced</RootNamespace>
     <AssemblyName>iDealAdvancedConnector</AssemblyName>
     <AssemblyTitle>iDealAdvancedConnector</AssemblyTitle>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Security" />
-  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Messages\itt-acq.xsd">
@@ -21,6 +18,11 @@
       <SubType>Designer</SubType>
       <CustomToolNamespace>iDeal.Messages</CustomToolNamespace>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
