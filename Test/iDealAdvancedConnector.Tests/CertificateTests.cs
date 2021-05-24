@@ -1,12 +1,19 @@
 using FluentAssertions;
 using ING.iDealAdvanced;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Test.Prepare.Utils;
 
 namespace iDealAdvancedConnector.Tests
 {
     [TestClass]
     public class CertificateTests
     {
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext _)
+        {
+            TestPrepare.CopyApplicationSettingsToActiveConfiguration();
+        }
+
         [TestMethod]
         public void When_getCertificate_from_storage_by_thumbPrint_With_impersonation_Should_return_the_correct_certificate()
         {

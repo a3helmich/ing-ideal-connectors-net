@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iDealAdvancedConnector", "iDealAdvancedConnector\iDealAdvancedConnector.csproj", "{31C95E7E-5796-4EBF-A0F0-346850E6FA78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iDealAdvancedConnector", "iDealAdvancedConnector\iDealAdvancedConnector.csproj", "{31C95E7E-5796-4EBF-A0F0-346850E6FA78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iDealSample", "iDealSample\iDealSample.csproj", "{96AA8462-B8AF-470E-BF0E-D21018DBB63D}"
 EndProject
@@ -17,7 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iDealSampleConsole", "iDeal
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E79062D8-7A9A-4F27-98A6-0D5720015F0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iDealAdvancedConnector.Tests", "Test\iDealAdvancedConnector.Tests\iDealAdvancedConnector.Tests.csproj", "{54DDAD5A-3BA0-44C0-9A0D-F32E326C6907}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iDealAdvancedConnector.Tests", "Test\iDealAdvancedConnector.Tests\iDealAdvancedConnector.Tests.csproj", "{54DDAD5A-3BA0-44C0-9A0D-F32E326C6907}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Prepare.Utils", "Test.Prepare.Utils\Test.Prepare.Utils.csproj", "{851E549F-BE27-4D62-82B9-5F9B7C29CDDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +43,17 @@ Global
 		{54DDAD5A-3BA0-44C0-9A0D-F32E326C6907}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54DDAD5A-3BA0-44C0-9A0D-F32E326C6907}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54DDAD5A-3BA0-44C0-9A0D-F32E326C6907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{851E549F-BE27-4D62-82B9-5F9B7C29CDDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{851E549F-BE27-4D62-82B9-5F9B7C29CDDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{851E549F-BE27-4D62-82B9-5F9B7C29CDDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{851E549F-BE27-4D62-82B9-5F9B7C29CDDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{54DDAD5A-3BA0-44C0-9A0D-F32E326C6907} = {E79062D8-7A9A-4F27-98A6-0D5720015F0A}
+		{851E549F-BE27-4D62-82B9-5F9B7C29CDDB} = {E79062D8-7A9A-4F27-98A6-0D5720015F0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31DFC6F4-95CE-4544-A1AB-C0AC617EB525}

@@ -335,7 +335,7 @@ namespace ING.iDealAdvanced
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlRequest);
 
-            var signatureElement = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
+            var _ = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
 
             xmlRequest = xmlDoc.OuterXml;
 
@@ -348,7 +348,9 @@ namespace ING.iDealAdvanced
             // Validate respons
             ValidateXML(xmlResponse);
 
-            if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, (RSA)merchantConfig.aquirerCertificate.PublicKey.Key))
+
+            //if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, (RSA)merchantConfig.aquirerCertificate.PublicKey.Key))
+            if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, merchantConfig.aquirerCertificate.GetRSAPublicKey()))
             {
                 if (traceSwitch.TraceInfo) TraceLine("Xml response was not well signed " + xmlResponse);
                 throw new ArgumentException("Response from server is not well signed");

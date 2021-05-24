@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using FluentAssertions;
 using ING.iDealAdvanced;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Test.Prepare.Utils;
 
 namespace iDealAdvancedConnector.Tests
 {
+
     [TestClass]
     public class IssuerListTests
     {
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext _)
+        {
+            TestPrepare.CopyApplicationSettingsToActiveConfiguration();
+        }
+
         [TestMethod]
         public void When_getIssuerList_called_should_return_list_of_issuers()
         {
