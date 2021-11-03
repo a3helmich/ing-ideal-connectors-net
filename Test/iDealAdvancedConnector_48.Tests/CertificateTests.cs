@@ -3,7 +3,7 @@ using ING.iDealAdvanced;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Prepare.Utils;
 
-namespace iDealAdvancedConnector.Tests
+namespace iDealAdvancedConnector_48.Tests
 {
     [TestClass]
     public class CertificateTests

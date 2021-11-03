@@ -718,16 +718,16 @@ namespace ING.iDealAdvanced
         /// Gets the merchant crypto service provider.
         /// </summary>
         /// <returns></returns>
-        private RSACryptoServiceProvider GetMerchantRSACryptoServiceProvider()
+        private RSA GetMerchantRSACryptoServiceProvider()
         {
-            RSACryptoServiceProvider rsa = null;
+            RSA rsa = null;
 
             try
             {
                 var useCertificateWithEnhancedAESCryptoProvider = GetOptionalAppSetting("UseCertificateWithEnhancedAESCryptoProvider", "False");
                 if (useCertificateWithEnhancedAESCryptoProvider.ToLowerInvariant().Equals("true"))
                 {
-                    rsa = (RSACryptoServiceProvider) merchantConfig.ClientCertificate.PrivateKey;
+                    rsa = (RSA) merchantConfig.ClientCertificate.PrivateKey;
                 }
                 else
                 {

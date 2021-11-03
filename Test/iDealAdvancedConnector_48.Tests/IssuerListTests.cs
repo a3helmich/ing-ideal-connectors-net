@@ -4,7 +4,7 @@ using ING.iDealAdvanced;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Prepare.Utils;
 
-namespace iDealAdvancedConnector.Tests
+namespace iDealAdvancedConnector_48.Tests
 {
 
     [TestClass]
@@ -17,7 +17,7 @@ namespace iDealAdvancedConnector.Tests
         }
 
         [TestMethod]
-        public void When_getIssuerList_called_should_return_list_of_issuers()
+        public void When_connector_getIssuerList_called_should_return_list_of_issuers()
         {
             //Arrange
             var connector = new Connector();
