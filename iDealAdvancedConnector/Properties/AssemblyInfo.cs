@@ -22,3 +22,6 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("iDealAdvancedConnector.Tests")]
+[assembly: InternalsVisibleTo("iDealAdvancedConnector_48.Tests")]
+[assembly: InternalsVisibleTo("iDealAdvancedConnector_50.Tests")]
+[assembly: InternalsVisibleTo("iDealAdvancedConnector_core31.Tests")]

@@ -335,7 +335,7 @@ namespace ING.iDealAdvanced
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlRequest);
 
-            var signatureElement = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
+            var _ = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
 
             xmlRequest = xmlDoc.OuterXml;
 
@@ -348,7 +348,9 @@ namespace ING.iDealAdvanced
             // Validate respons
             ValidateXML(xmlResponse);
 
-            if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, (RSA)merchantConfig.aquirerCertificate.PublicKey.Key))
+
+            //if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, (RSA)merchantConfig.aquirerCertificate.PublicKey.Key))
+            if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, merchantConfig.aquirerCertificate.GetRSAPublicKey()))
             {
                 if (traceSwitch.TraceInfo) TraceLine("Xml response was not well signed " + xmlResponse);
                 throw new ArgumentException("Response from server is not well signed");
@@ -716,16 +718,16 @@ namespace ING.iDealAdvanced
         /// Gets the merchant crypto service provider.
         /// </summary>
         /// <returns></returns>
-        private RSACryptoServiceProvider GetMerchantRSACryptoServiceProvider()
+        private RSA GetMerchantRSACryptoServiceProvider()
         {
-            RSACryptoServiceProvider rsa = null;
+            RSA rsa = null;
 
             try
             {
                 var useCertificateWithEnhancedAESCryptoProvider = GetOptionalAppSetting("UseCertificateWithEnhancedAESCryptoProvider", "False");
                 if (useCertificateWithEnhancedAESCryptoProvider.ToLowerInvariant().Equals("true"))
                 {
-                    rsa = (RSACryptoServiceProvider) merchantConfig.ClientCertificate.PrivateKey;
+                    rsa = (RSA) merchantConfig.ClientCertificate.PrivateKey;
                 }
                 else
                 {
