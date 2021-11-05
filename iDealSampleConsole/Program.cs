@@ -34,7 +34,7 @@ namespace iDealSampleConsole
             string my_xml = "<root><test>test</test></root>";
             doc.LoadXml(my_xml);
 
-            ING.iDealAdvanced.Connector conn = new ING.iDealAdvanced.Connector();
+            ING.iDealAdvanced.IConnector conn = ING.iDealAdvanced.Connector.CreateConnector();
 
             X509Certificate2 cert = conn.ClientCertificate;
             RSACryptoServiceProvider key = null;// conn.GetMerchantRSACryptoServiceProvider();

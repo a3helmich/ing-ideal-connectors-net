@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\iDealAdvancedConnector_48.Tests\CertificateTests.cs" Link="CertificateTests.cs" />
+    <Compile Include="..\iDealAdvancedConnector_48.Tests\IssuerListTests.cs" Link="IssuerListTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

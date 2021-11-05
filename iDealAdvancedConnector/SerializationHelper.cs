@@ -63,7 +63,7 @@ namespace ING.iDealAdvanced
         /// <typeparam name="T">Type of the object to serialize.</typeparam>
         /// <param name="obj">Object instance to serialize.</param>
         /// <returns>XML string.</returns>
-        internal static string SerializeObject<T>(Object obj)
+        internal static string SerializeObject<T>(object obj)
         {
             StringWriter sw = new UTF8StringWriter();
 

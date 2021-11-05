@@ -20,7 +20,7 @@ namespace iDealAdvancedConnector_48.Tests
         public void When_connector_getIssuerList_called_should_return_list_of_issuers()
         {
             //Arrange
-            var connector = new Connector();
+            var connector = Connector.CreateConnector();
 
             //Act
             var issuers = connector.GetIssuerList();

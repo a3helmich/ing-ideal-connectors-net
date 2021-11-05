@@ -44,7 +44,7 @@ namespace ING.iDealSample
         {
             try
             {
-                Connector connector = new Connector();
+                IConnector connector = Connector.CreateConnector();
                 // Override MerchantId loaded from configuration
                 //connector.MerchantId = "025152899";
                 Transaction transaction = connector.RequestTransactionStatus(TextBoxTransactionIdValue.Text);
