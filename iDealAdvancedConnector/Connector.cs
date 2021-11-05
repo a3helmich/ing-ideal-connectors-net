@@ -289,6 +289,8 @@ namespace ING.iDealAdvanced
 
         private List<string> validationErrors;
 
+        private IConnector _connector;
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -310,9 +312,13 @@ namespace ING.iDealAdvanced
         }
 
         public static IConnector CreateConnector(X509Certificate2 acquirerCertificate = null, X509Certificate2 clientCertificate = null,
-            string merchantId = null, string merchantSubId = null, string acquirerUrl = null)
+            string merchantId = null, string merchantSubId = null, string acquirerUrl = null, IConnector connectorMock = null)
         {
-            return new Connector(acquirerCertificate, clientCertificate, merchantId, merchantSubId, acquirerUrl);
+            var connector = new Connector(acquirerCertificate, clientCertificate, merchantId, merchantSubId, acquirerUrl);
+
+            connector._connector = connectorMock ?? connector;
+
+            return connector;
         }
 
         /// <summary>
