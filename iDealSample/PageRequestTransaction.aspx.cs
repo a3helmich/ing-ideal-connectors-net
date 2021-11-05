@@ -1,15 +1,6 @@
 using System;
-using System.Data;
 using System.Configuration;
-using System.Collections;
-using System.Net;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-
 using ING.iDealAdvanced;
 using ING.iDealAdvanced.Data;
 using System.Globalization;
@@ -57,7 +48,7 @@ namespace ING.iDealSample
             try
             {
                 Transaction transaction = new Transaction();
-                decimal amount = 0;
+                decimal amount;
 
                 try
                 {
@@ -75,7 +66,7 @@ namespace ING.iDealSample
                 transaction.IssuerId = TextBoxIssuerIdValue.Text;
                 transaction.EntranceCode = TextBoxEntranceCodeValue.Text;
 
-                Connector connector = new Connector();
+                IConnector connector = Connector.CreateConnector();
                 // Override MerchantId loaded from configuration
                 //connector.MerchantId = "025152899";
                 connector.ExpirationPeriod = HttpUtility.HtmlEncode(TextBoxExpirationPeriodValue.Text);

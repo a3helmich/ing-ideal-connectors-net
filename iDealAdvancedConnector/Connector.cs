@@ -17,9 +17,6 @@ using ING.iDealAdvanced.Data;
 using ING.iDealAdvanced.Messages;
 using Microsoft.Win32.SafeHandles;
 
-/// <summary>
-/// ING.iDealAdvanced connector
-/// </summary>
 namespace ING.iDealAdvanced
 {
     /// <summary>
@@ -33,7 +30,7 @@ namespace ING.iDealAdvanced
     /// <exception cref="WebException">Error getting reply from acquirer.</exception>
     /// <exception cref="CryptographicException">Error using client certificate.</exception>
     /// <exception cref="SecurityException">The iDEAL response signature is invalid.</exception>
-    public class Connector
+    public class Connector : IConnector
     {
         /// <summary>
         /// This class holds the merchant configuration.
@@ -113,19 +110,19 @@ namespace ING.iDealAdvanced
             {
                 MerchantConfig merchantConfig = new MerchantConfig
                 {
-                    MerchantId = this.MerchantId,
-                    SubId = this.SubId,
-                    merchantReturnUrl = this.merchantReturnUrl,
-                    ClientCertificate = this.ClientCertificate,
-                    aquirerCertificate = this.aquirerCertificate,
-                    acquirerURL = this.acquirerURL,
-                    acquirerUrlDIR = this.acquirerUrlDIR,
-                    acquirerUrlTRA = this.acquirerUrlTRA,
-                    acquirerUrlSTA = this.acquirerUrlSTA,
-                    acquirerTimeout = this.acquirerTimeout,
-                    ExpirationPeriod = this.ExpirationPeriod,
-                    currency = this.currency,
-                    language = this.language
+                    MerchantId = MerchantId,
+                    SubId = SubId,
+                    merchantReturnUrl = merchantReturnUrl,
+                    ClientCertificate = ClientCertificate,
+                    aquirerCertificate = aquirerCertificate,
+                    acquirerURL = acquirerURL,
+                    acquirerUrlDIR = acquirerUrlDIR,
+                    acquirerUrlTRA = acquirerUrlTRA,
+                    acquirerUrlSTA = acquirerUrlSTA,
+                    acquirerTimeout = acquirerTimeout,
+                    ExpirationPeriod = ExpirationPeriod,
+                    currency = currency,
+                    language = language
                 };
 
                 return merchantConfig;
@@ -142,7 +139,7 @@ namespace ING.iDealAdvanced
         private MerchantConfig DefaultMerchantConfig(X509Certificate2 acquirerCertificate = null, X509Certificate2 clientCertificate = null,
             string merchantId = null, string merchantSubId = null, string acquirerUrl = null)
         {          
-                if (Connector.defaultMerchantConfig == null)
+                if (defaultMerchantConfig == null)
                 {
                     MerchantConfig newMerchant = new MerchantConfig
                     {
@@ -150,25 +147,25 @@ namespace ING.iDealAdvanced
                         SubId = merchantSubId ?? GetAppSetting("SubID")
                     };
                 
-                    String merchantReturnUrl = GetAppSetting("MerchantReturnURL");
+                    string merchantReturnUrl = GetAppSetting("MerchantReturnURL");
                     if (!Uri.TryCreate(merchantReturnUrl, UriKind.Absolute, out newMerchant.merchantReturnUrl))
                         throw new UriFormatException("MerchantReturnURL is not in correct format.");
 
-                    newMerchant.ClientCertificate = clientCertificate ?? Connector.GetCertificate(GetAppSetting("Privatecert"));
-                    newMerchant.aquirerCertificate = acquirerCertificate ?? Connector.GetCertificate(GetAppSetting("Acquirercert"));
+                    newMerchant.ClientCertificate = clientCertificate ?? GetCertificate(GetAppSetting("Privatecert"));
+                    newMerchant.aquirerCertificate = acquirerCertificate ?? GetCertificate(GetAppSetting("Acquirercert"));
 
                     var acquirerUrlConfig = acquirerUrl ?? ConfigurationManager.AppSettings["AcquirerURL"];
                     var acquirerDirectoryUrl = ConfigurationManager.AppSettings["AcquirerDirectoryURL"];
                     var acquirerTransactionUrl = ConfigurationManager.AppSettings["AcquirerTransactionURL"];
                     var acquirerTransactionStatusUrl = ConfigurationManager.AppSettings["AcquirerTransactionStatusURL"];
 
-                    if (!String.IsNullOrEmpty(acquirerUrlConfig))
+                    if (!string.IsNullOrEmpty(acquirerUrlConfig))
                     {
                         //Check to see if other urls are given.
 
-                        if (!String.IsNullOrEmpty(acquirerDirectoryUrl) ||
-                            !String.IsNullOrEmpty(acquirerTransactionUrl) ||
-                            !String.IsNullOrEmpty(acquirerTransactionStatusUrl))
+                        if (!string.IsNullOrEmpty(acquirerDirectoryUrl) ||
+                            !string.IsNullOrEmpty(acquirerTransactionUrl) ||
+                            !string.IsNullOrEmpty(acquirerTransactionStatusUrl))
                         {
                             throw new NotSupportedException("When acquirerURL is given then other URLs should not be supplied");
                         }
@@ -189,7 +186,7 @@ namespace ING.iDealAdvanced
                     }
                     
                     string acquirerTimeout = GetAppSetting("AcquirerTimeout");
-                    if (!Int32.TryParse(acquirerTimeout, out newMerchant.acquirerTimeout))
+                    if (!int.TryParse(acquirerTimeout, out newMerchant.acquirerTimeout))
                         throw new InvalidCastException("AcquirerTimeout is not in correct format.");
 
                     newMerchant.ExpirationPeriod = GetOptionalAppSetting("ExpirationPeriod", null);
@@ -199,10 +196,10 @@ namespace ING.iDealAdvanced
 
                     XmlSignature.XmlSignature.RegisterSignatureAlghorighm();
 
-                    Connector.defaultMerchantConfig = newMerchant;
+                    defaultMerchantConfig = newMerchant;
                 }
 
-                return Connector.defaultMerchantConfig;           
+                return defaultMerchantConfig;           
         }
 
         #region Public Properties
@@ -288,7 +285,7 @@ namespace ING.iDealAdvanced
 
         private MerchantConfig merchantConfig;
 
-        private static TraceSwitch traceSwitch = new TraceSwitch("iDealConnector", String.Empty);
+        private static TraceSwitch traceSwitch = new TraceSwitch("iDealConnector", string.Empty);
 
         private List<string> validationErrors;
 
@@ -303,13 +300,19 @@ namespace ING.iDealAdvanced
         /// <exception cref="UriFormatException">Url is not in correct format.</exception>
         /// <exception cref="InvalidCastException">Configuration setting has invalid format.</exception>
         /// <exception cref="ConfigurationErrorsException">Configuration setting is missing.</exception>
-        public Connector(X509Certificate2 acquirerCertificate = null, X509Certificate2 clientCertificate = null,
+        private Connector(X509Certificate2 acquirerCertificate = null, X509Certificate2 clientCertificate = null,
             string merchantId = null, string merchantSubId = null, string acquirerUrl = null)
         {
             // Copy configuration from default configuration
             merchantConfig = (MerchantConfig)DefaultMerchantConfig(acquirerCertificate, clientCertificate, merchantId, merchantSubId, acquirerUrl).Clone();
 
             Resources.Culture = CultureInfo.CurrentCulture;
+        }
+
+        public static IConnector CreateConnector(X509Certificate2 acquirerCertificate = null, X509Certificate2 clientCertificate = null,
+            string merchantId = null, string merchantSubId = null, string acquirerUrl = null)
+        {
+            return new Connector(acquirerCertificate, clientCertificate, merchantId, merchantSubId, acquirerUrl);
         }
 
         /// <summary>
@@ -348,8 +351,6 @@ namespace ING.iDealAdvanced
             // Validate respons
             ValidateXML(xmlResponse);
 
-
-            //if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, (RSA)merchantConfig.aquirerCertificate.PublicKey.Key))
             if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, merchantConfig.aquirerCertificate.GetRSAPublicKey()))
             {
                 if (traceSwitch.TraceInfo) TraceLine("Xml response was not well signed " + xmlResponse);
@@ -361,7 +362,7 @@ namespace ING.iDealAdvanced
             // Check respons for errors
             CheckError(xmlResponse, Resources.iDealUnavailable);
 
-            DirectoryRes response = (DirectoryRes)SerializationHelper.DeserializeObject<DirectoryRes>(xmlResponse);
+            DirectoryRes response = SerializationHelper.DeserializeObject<DirectoryRes>(xmlResponse);
 
             // Create the return object and initialze it with the iDEAL respons Directory
             var issuers = new Issuers(response.Directory);
@@ -447,7 +448,7 @@ namespace ING.iDealAdvanced
             // Check respons for errors
             CheckError(xmlRespons, Resources.iDealUnavailable);
 
-            AcquirerTrxRes respons = (AcquirerTrxRes)SerializationHelper.DeserializeObject<AcquirerTrxRes>(xmlRespons);
+            AcquirerTrxRes respons = SerializationHelper.DeserializeObject<AcquirerTrxRes>(xmlRespons);
 
             transaction.Id = respons.Transaction.transactionID;
             // added in v3.3.x
@@ -500,7 +501,7 @@ namespace ING.iDealAdvanced
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlRequest);
 
-            var signatureElement = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
+            var _ = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
 
             xmlRequest = xmlDoc.OuterXml;
 
@@ -524,7 +525,7 @@ namespace ING.iDealAdvanced
             // Check respons for errors
             CheckError(xmlResponse, Resources.iDealStatusCheckFailed);
 
-            AcquirerStatusRes response = (AcquirerStatusRes)SerializationHelper.DeserializeObject<AcquirerStatusRes>(xmlResponse);
+            AcquirerStatusRes response = SerializationHelper.DeserializeObject<AcquirerStatusRes>(xmlResponse);
 
             Transaction transaction = new Transaction();
 
@@ -558,13 +559,13 @@ namespace ING.iDealAdvanced
             if (traceSwitch.TraceInfo) TraceLine("Start of GetReplyFromAcquirer()");
             if (traceSwitch.TraceVerbose) TraceLine(Format("Parameters: request: {0}", request));
 
-            string reply = String.Empty;
+            string reply;
 
-            System.Text.Encoding encoding = new System.Text.UTF8Encoding(false);
+            Encoding encoding = new UTF8Encoding(false);
 
             try
             {
-                Byte[] bytesToSend = encoding.GetBytes(request);
+                byte[] bytesToSend = encoding.GetBytes(request);
 
                 // Send the xml to remote server
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -720,7 +721,7 @@ namespace ING.iDealAdvanced
         /// <returns></returns>
         private RSA GetMerchantRSACryptoServiceProvider()
         {
-            RSA rsa = null;
+            RSA rsa;
 
             try
             {
@@ -789,14 +790,14 @@ namespace ING.iDealAdvanced
                 }
             }
 
-            xmlDoc.Schemas.Add(ING.iDealAdvanced.Security.XsdValidation.AllSchemas);
+            xmlDoc.Schemas.Add(Security.XsdValidation.AllSchemas);
 
-            xmlDoc.Validate(this.ValidationError);
+            xmlDoc.Validate(ValidationError);
 
             // Check validation error list
             if (validationErrors.Count > 0)
             {
-                string errors = String.Empty;
+                string errors = string.Empty;
 
                 foreach (string validationError in validationErrors)
                     errors += (validationError + Environment.NewLine);
@@ -824,10 +825,10 @@ namespace ING.iDealAdvanced
         {
             if (xml.Contains("<AcquirerErrorRes"))
             {
-                AcquirerErrorRes errorRes = (AcquirerErrorRes)SerializationHelper.DeserializeObject<AcquirerErrorRes>(xml);
+                AcquirerErrorRes errorRes = SerializationHelper.DeserializeObject<AcquirerErrorRes>(xml);
 
                 // Set consumerMessage if it has not been set by the iDEAL service
-                if (String.IsNullOrEmpty(errorRes.Error.consumerMessage))
+                if (string.IsNullOrEmpty(errorRes.Error.consumerMessage))
                     errorRes.Error.consumerMessage = consumerMessage;
 
                 throw new IDealException(errorRes);
@@ -855,7 +856,6 @@ namespace ING.iDealAdvanced
             Trace.Flush();
         }
 
-
         /// <summary>
         /// Gets a value from the AppSettings.
         /// </summary>
@@ -866,12 +866,11 @@ namespace ING.iDealAdvanced
         {
             string value = ConfigurationManager.AppSettings[key];
 
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 throw new ConfigurationErrorsException(Format("Cannot find key in appSettings for \"{0}\", check your web.config file.", key));
 
             return value;
         }
-
 
         /// <summary>
         /// Gets an optional value from the AppSettings.
@@ -883,7 +882,7 @@ namespace ING.iDealAdvanced
         {
             string value = ConfigurationManager.AppSettings[key];
 
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 return defaultValue;
 
             return value;
@@ -907,7 +906,7 @@ namespace ING.iDealAdvanced
         /// <returns>String with white space removed.</returns>
         private static string RemoveWhiteSpace(string text)
         {
-            return Regex.Replace(text, @"\s+", String.Empty);
+            return Regex.Replace(text, @"\s+", string.Empty);
 
         }
 
@@ -920,16 +919,7 @@ namespace ING.iDealAdvanced
         /// <exception cref="FormatException">Error while formatting string.</exception>
         private static string Format(string stringToFormat, params object[] args)
         {
-            return String.Format(CultureInfo.CurrentCulture, stringToFormat, args);
+            return string.Format(CultureInfo.CurrentCulture, stringToFormat, args);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public class Settings 
-        {
-             
-        }
-
     }
 }

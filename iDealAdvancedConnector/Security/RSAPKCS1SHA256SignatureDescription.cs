@@ -85,9 +85,9 @@ namespace ING.iDealAdvanced.Security
         public RSAPKCS1SHA256SignatureDescription()
         {
             KeyAlgorithm = typeof(RSACryptoServiceProvider).AssemblyQualifiedName;
-            DigestAlgorithm = typeof(SHA256Managed).FullName;   // Note - SHA256CryptoServiceProvider is not registered with CryptoConfig
-            FormatterAlgorithm = typeof(RSAPKCS1SignatureFormatter).FullName;
-            DeformatterAlgorithm = typeof(RSAPKCS1SignatureDeformatter).FullName;
+            DigestAlgorithm = typeof(SHA256Managed).AssemblyQualifiedName;   // Note - SHA256CryptoServiceProvider is not registered with CryptoConfig
+            FormatterAlgorithm = typeof(RSAPKCS1SignatureFormatter).AssemblyQualifiedName;
+            DeformatterAlgorithm = typeof(RSAPKCS1SignatureDeformatter).AssemblyQualifiedName;
         }
 
         /// <summary>

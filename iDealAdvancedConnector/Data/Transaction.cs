@@ -177,7 +177,7 @@ namespace ING.iDealAdvanced.Data
         /// <returns>Transaction formatted as a string.</returns>
         public override string ToString()
         {
-            string result = String.Empty;
+            string result = string.Empty;
             foreach (PropertyInfo prop in this.GetType().GetProperties())
             {
                 string propValue = prop.GetValue(this, null) == null ? "<NULL>" : prop.GetValue(this, null).ToString();
@@ -195,8 +195,8 @@ namespace ING.iDealAdvanced.Data
         /// <exception cref="ArgumentException">Input contains characters that are not in the allowed character set.</exception>
         private static void ValidateString(string name, string text)
         {
-            if (String.IsNullOrEmpty(text)) throw new ArgumentNullException(String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0} cannot be empty or null.", name));
-            if (!Regex.IsMatch(text, Constants.stringPattern)) throw new ArgumentException(String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0} contains one or more unsupported characters.", name));
+            if (string.IsNullOrEmpty(text)) throw new ArgumentNullException(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0} cannot be empty or null.", name));
+            if (!Regex.IsMatch(text, Constants.stringPattern)) throw new ArgumentException(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0} contains one or more unsupported characters.", name));
         }
     }
 }

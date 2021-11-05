@@ -99,7 +99,7 @@ namespace ING.iDealSample
                 if (issuers == null)
                 {
                     // No issuer list was cached, get it from iDeal service
-                    Connector connector = new Connector();
+                    IConnector connector = Connector.CreateConnector();
                     // Override MerchantId loaded from configuration
                     //connector.MerchantId = "025152899";
 

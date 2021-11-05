@@ -69,7 +69,7 @@ namespace ING.iDealAdvanced.Data
                 if (first == null) throw new ArgumentException("first is null");
                 if (second == null) throw new ArgumentException("second is null");
 
-                return String.Compare(first.Name, second.Name, true, CultureInfo.InvariantCulture);
+                return string.Compare(first.Name, second.Name, true, CultureInfo.InvariantCulture);
             }
         }
     }
