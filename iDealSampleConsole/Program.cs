@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using ING.iDealAdvanced.Security;
 using ING.iDealAdvanced.XmlSignature;
@@ -15,29 +8,29 @@ namespace iDealSampleConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Method2();
         }
 
         private static void Method2()
         {
-            Console.WriteLine("Press enter to start the test");
+            Console.WriteLine(@"Press enter to start the test");
             Console.ReadLine();
             CryptoConfig.AddAlgorithm(typeof(RSAPKCS1SHA256SignatureDescription), "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256");
 
             // Create a new XML document.
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             // Format the document to ignore white spaces.
             doc.PreserveWhitespace = false;
             // Load the passed XML 
-            string my_xml = "<root><test>test</test></root>";
+            var my_xml = "<root><test>test</test></root>";
             doc.LoadXml(my_xml);
 
-            ING.iDealAdvanced.IConnector conn = ING.iDealAdvanced.Connector.CreateConnector();
+            var conn = ING.iDealAdvanced.Connector.CreateConnector();
 
-            X509Certificate2 cert = conn.ClientCertificate;
-            RSACryptoServiceProvider key = null;// conn.GetMerchantRSACryptoServiceProvider();
+            var cert = conn.ClientCertificate;
+            var key = conn.GetMerchantRSACryptoServiceProvider();
 
             XmlSignature.Sign(ref doc, key, cert.Thumbprint);
 
@@ -45,7 +38,7 @@ namespace iDealSampleConsole
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine("Ended");
+            Console.WriteLine(@"Ended");
             Console.ReadLine();
         }
     }
