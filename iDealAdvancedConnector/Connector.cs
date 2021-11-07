@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Security;
+using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -344,7 +345,7 @@ namespace ING.iDealAdvanced
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlRequest);
 
-            var _ = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
+            var _ = XmlSignature.XmlSignature.Sign(ref xmlDoc, _connector.GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
 
             xmlRequest = xmlDoc.OuterXml;
 
@@ -430,7 +431,7 @@ namespace ING.iDealAdvanced
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlRequest);
 
-            var signatureElement = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
+            var signatureElement = XmlSignature.XmlSignature.Sign(ref xmlDoc, _connector.GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
 
             xmlRequest = xmlDoc.OuterXml;
 
@@ -507,7 +508,7 @@ namespace ING.iDealAdvanced
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlRequest);
 
-            var _ = XmlSignature.XmlSignature.Sign(ref xmlDoc, GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
+            var _ = XmlSignature.XmlSignature.Sign(ref xmlDoc, _connector.GetMerchantRSACryptoServiceProvider(), merchantConfig.ClientCertificate.Thumbprint);
 
             xmlRequest = xmlDoc.OuterXml;
 
@@ -725,7 +726,7 @@ namespace ING.iDealAdvanced
         /// Gets the merchant crypto service provider.
         /// </summary>
         /// <returns></returns>
-        private RSA GetMerchantRSACryptoServiceProvider()
+        RSA IConnector.GetMerchantRSACryptoServiceProvider()
         {
             RSA rsa;
 

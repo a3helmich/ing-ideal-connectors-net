@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using ING.iDealAdvanced.Data;
 
@@ -17,5 +18,7 @@ namespace ING.iDealAdvanced
         Issuers GetIssuerList();
 
         Transaction RequestTransactionStatus(string transactionId);
+
+        internal RSA GetMerchantRSACryptoServiceProvider();
     }
 }
