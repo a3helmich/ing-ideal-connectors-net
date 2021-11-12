@@ -1,0 +1,32 @@
+<Project>
+	<PropertyGroup>
+		<Version>2021.1.01</Version>
+    
+		<Authors>Adrie Helmich</Authors>
+		<Copyright>Copyright © ING Group 2007-2017</Copyright>
+		<Company>Konfidence in it</Company>
+		<AssemblyCompany>Konfidence in it</AssemblyCompany>
+    
+		<LangVersion>latest</LangVersion>
+
+		<ComVisible>false</ComVisible>
+		<CLSCompliant>true</CLSCompliant>
+		<AssemblyCulture>en</AssemblyCulture>
+
+		<Product>iDealAdvancedConnector</Product>
+
+		<PackageTags>iDealAdvancedConnector</PackageTags>
+		<Description>Opensource tools and API to connect webshops and merchants to ING using iDeal</Description>
+
+		<PackageOutputPath>$(SolutionDir)nuget</PackageOutputPath>
+
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/a3helmich/ing-ideal-connectors-net</PackageProjectUrl>
+
+		<RepositoryUrl>https://github.com/a3helmich/ing-ideal-connectors-net</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+</Project>
