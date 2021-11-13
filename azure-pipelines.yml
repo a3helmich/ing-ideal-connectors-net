@@ -55,7 +55,7 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    packagesToPack: '$(solution)'
+    packagesToPack: '$(BuildConfiguration)\ideal*.csproj'
     nobuild: false
     verbosityPack: Normal
     
@@ -64,4 +64,4 @@ steps:
   inputs:
     command: custom
     custom: nuget
-    arguments: 'push $(Build.ArtifactStagingDirectory)\Konfidence.iDealAdvancedConnector.*.nupkg -s https://api.nuget.org/v3/index.json -k $(vNuGetApiKey) --skip-duplicate'
+    arguments: 'push $(Build.ArtifactStagingDirectory)\Konfidence.ing.iDealAdvancedConnector.*.nupkg -s https://api.nuget.org/v3/index.json -k $(vNuGetApiKey) --skip-duplicate'
