@@ -55,7 +55,7 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    packagesToPack: '$(BuildConfiguration)\ideal*.csproj'
+    packagesToPack: '$(solution)'
     nobuild: false
     verbosityPack: Normal
     
