@@ -23,6 +23,8 @@
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/a3helmich/ing-ideal-connectors-net</PackageProjectUrl>
 
+		<PackageReadmeFile>../README.md</PackageReadmeFile>
+
 		<RepositoryUrl>https://github.com/a3helmich/ing-ideal-connectors-net</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 
