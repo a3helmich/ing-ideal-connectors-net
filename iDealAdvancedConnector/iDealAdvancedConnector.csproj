@@ -6,7 +6,9 @@
 		<AssemblyName>iDealAdvancedConnector</AssemblyName>
 		<AssemblyTitle>iDealAdvancedConnector</AssemblyTitle>
 		<LangVersion>latest</LangVersion>
+
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Konfidence.ing.iDealAdvancedConnector</PackageId>
 	</PropertyGroup>
 
 	<ItemGroup>
