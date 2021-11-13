@@ -56,7 +56,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '$(solution)'
-    nobuild: true
+    nobuild: false
     verbosityPack: Normal
     
 - task: DotNetCoreCLI@2
