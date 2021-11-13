@@ -18,9 +18,15 @@ pool:
   name: 'Default'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  - name: solution
+    value: '**/*.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
+  - group: nuget.org-apikeys
+  - name: vNuGetApiKey
+    value: $[variables.NuGetApiKey]
 
 steps:
 - task: NuGetToolInstaller@1
@@ -44,3 +50,18 @@ steps:
     projects: '$(solution)'
     arguments: '-c $(BuildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
     testRunTitle: 'dotnet Test'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: '$(solution)'
+    nobuild: false
+    verbosityPack: Normal
+    
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish nuget.org package'
+  inputs:
+    command: custom
+    custom: nuget
+    arguments: 'push $(Build.ArtifactStagingDirectory)\Konfidence.ing.iDealAdvancedConnector.*.nupkg -s https://api.nuget.org/v3/index.json -k $(vNuGetApiKey) --skip-duplicate'
