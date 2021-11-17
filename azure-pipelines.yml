@@ -56,8 +56,10 @@ steps:
   inputs:
     command: pack
     packagesToPack: '$(solution)'
-    nobuild: false
+    includesymbols: false
+    nobuild: true
     verbosityPack: Normal
+    versioningScheme: 'off'
     
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish nuget.org package'
