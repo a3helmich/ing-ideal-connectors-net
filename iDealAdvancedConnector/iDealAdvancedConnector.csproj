@@ -11,6 +11,10 @@
 		<PackageId>Konfidence.ing.iDealAdvancedConnector</PackageId>
 	</PropertyGroup>
 
+	<PropertyGroup>
+	  <NoWarn>1701;1702;CA1416</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<EmbeddedResource Include="Messages\itt-acq.xsd">
 			<SubType>Designer</SubType>
