@@ -1,0 +1,79 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model iDealSampleCore.Models.PageIssuerListModel
+
+@{
+  ViewData["Title"] = "IAC";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+  <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+    Functie-parameters:<br />
+    (none)
+  </div>
+  &nbsp;
+  <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+    Vanuit configuratie:<br />
+    <dl class="row" style="margin-bottom: 0">
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+        @Html.DisplayNameFor(model => model.MerchantId)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.MerchantId, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+        @Html.DisplayNameFor(model => model.SubId)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.SubId, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+        @Html.DisplayNameFor(model => model.AcquirerUrl)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.AcquirerUrl, new { @style = "width:351px;" })
+      </dd>
+    </dl>
+  </div>
+  &nbsp;
+  <div style="border-style: Solid;width: 800px;">
+    <div class="d-grid gap-2 col-6 mx-auto" style="border-style: Solid; width: 112px; border-width: 1px; padding: 0; background-color: gainsboro">
+      <a asp-area="" asp-controller="Home" asp-action="GetIssuerList" style="display: inline-block;font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">Get Issuer List</a>
+    </div>
+  </div>
+  &nbsp;
+  <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+    Resultaat:<br />
+    <dl class="row" style="margin-bottom: 0">
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+        @Html.DisplayNameFor(model => model.DateTime)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.DateTime, new { @style = "width:351px;" })
+      </dd>
+      <br />
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+        @Html.DisplayNameFor(model => model.DropDownListIssuers)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DropDownListFor(m => m.DropDownListIssuers, (IEnumerable<SelectListItem>)ViewData["Issuers"], new { @style = "width:220px;border-width: 1px;" })
+      </dd>
+    </dl>
+    <iDeal:GroupedDropDownList ID="DropDownListIssuers" runat="server" Width="200">
+    </iDeal:GroupedDropDownList>
+    <asp:RegularExpressionValidator ID="RegularExpressionIssuerList" runat="server" ControlToValidate="DropDownListIssuers"
+                                    ErrorMessage="RegularExpressionValidator" ValidationExpression="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}"
+                                    Display="Dynamic">Format for issuer id not correct.</asp:RegularExpressionValidator>
+  </div>
+  &nbsp;
+  <div style="border-style: Solid;width: 800px;">
+    <div class="d-grid gap-2 col-6 mx-auto" style="border-style: Solid; width: 150px; border-width: 1px; padding: 0; background-color: gainsboro">
+      <a asp-area="" asp-controller="Home" asp-action="TransActionRequest" style="display: inline-block;font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">Transaction Request</a>
+    </div>
+  </div>
+  &nbsp;
+</div>
+<div>
+  @Html.ActionLink("PageIssuerList", "PageIssuerList", new { /* id = Model.PrimaryKey */ }) |
+  <a asp-action="Index">Back to List</a>
+</div>
