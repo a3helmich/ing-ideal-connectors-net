@@ -17,6 +17,8 @@ namespace iDealSampleCore.Controllers
 
         private readonly IConfiguration _configuration;
 
+        private static List<SelectListItem> _issuerListModel = null;
+
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
@@ -52,24 +54,22 @@ namespace iDealSampleCore.Controllers
                 DateTime = DateTime.Now
             };
 
-            pageIssuerListModel.DropDownListIssuers =
-                pageIssuerListModel
-                    .GetIssuers()
-                    .GetIssuerSelectList();
+            _issuerListModel ??= pageIssuerListModel
+                .GetIssuers()
+                .GetIssuerSelectList();
+
+            pageIssuerListModel.DropDownListIssuers = _issuerListModel;
 
             return View("PageIssuerList", pageIssuerListModel);
         }
 
-        //[HttpPost]
         public IActionResult TransActionRequest(PageIssuerListModel pageIssuerListModel)
         {
-            //var pageIssuerListModel = new PageIssuerListModel
-            //{
-            //    AcquirerUrl = _configuration["AcquirerUrl"],
-            //    MerchantId = _configuration["MerchantId"],
-            //    SubId = _configuration["SubId"],
-            //    DateTime = null
-            //};
+            pageIssuerListModel.AcquirerUrl = _configuration["AcquirerUrl"];
+            pageIssuerListModel.MerchantId = _configuration["MerchantId"];
+            pageIssuerListModel.SubId = _configuration["SubId"];
+            pageIssuerListModel.DateTime = DateTime.Now;
+            pageIssuerListModel.DropDownListIssuers = _issuerListModel;
 
             return View("PageIssuerList", pageIssuerListModel);
         }
