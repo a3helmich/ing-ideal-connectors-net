@@ -36,10 +36,13 @@
     </dl>
   </div>
   &nbsp;
-  <div style="border-style: Solid;width: 800px;">
-    <div class="d-grid gap-2 col-6 mx-auto" style="border-style: Solid; width: 112px; border-width: 1px; padding: 0; background-color: gainsboro">
-      <a asp-area="" asp-controller="Home" asp-action="GetIssuerList" style="display: inline-block;font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">Get Issuer List</a>
-    </div>
+  <div style="border-style: Solid;width: 800px;horiz-align: center; text-align: center; vertical-align: center;">
+@*    <div class="d-grid gap-2 col-6 mx-auto" style="border-style: Solid; width: 112px; border-width: 1px; padding: 0; background-color: gainsboro">*@
+<a asp-area="" asp-controller="Home" asp-action="GetIssuerList" style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">
+  <button style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">Get Issuer List
+  </button>
+</a>
+@*    </div>*@
   </div>
   &nbsp;
   <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
@@ -56,7 +59,7 @@
         @Html.DisplayNameFor(model => model.DropDownListIssuers)
       </dt>
       <dd class="col-sm-10" style="margin-bottom: 0">
-        @Html.DropDownListFor(m => m.DropDownListIssuers, (IEnumerable<SelectListItem>)ViewData["Issuers"], new { @style = "width:220px;border-width: 1px;" })
+        <select asp-items="Model.DropDownListIssuers" style="width:200px;border-width: 1px; font-size: 14px"></select>
       </dd>
     </dl>
     <iDeal:GroupedDropDownList ID="DropDownListIssuers" runat="server" Width="200">
@@ -64,12 +67,13 @@
     <asp:RegularExpressionValidator ID="RegularExpressionIssuerList" runat="server" ControlToValidate="DropDownListIssuers"
                                     ErrorMessage="RegularExpressionValidator" ValidationExpression="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}"
                                     Display="Dynamic">Format for issuer id not correct.</asp:RegularExpressionValidator>
+    <span asp-validation-for="DropDownListIssuers"></span>
   </div>
   &nbsp;
-  <div style="border-style: Solid;width: 800px;">
-    <div class="d-grid gap-2 col-6 mx-auto" style="border-style: Solid; width: 150px; border-width: 1px; padding: 0; background-color: gainsboro">
-      <a asp-area="" asp-controller="Home" asp-action="TransActionRequest" style="display: inline-block;font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">Transaction Request</a>
-    </div>
+  <div style="border-style: Solid;width: 800px; horiz-align: center; text-align: center; vertical-align: center;">
+    @*<div  style="border-style: none; width: 200px; border-width: 0px; padding: 0; background-color: transparent; horiz-align: center; text-align: center; vertical-align: center;">*@
+      <button asp-area="" asp-controller="Home" asp-action="TransActionRequest" style="display: inline-block;font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;margin: 0">Transaction Request</button>
+    @*</div>*@
   </div>
   &nbsp;
 </div>

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using iDealSampleCore.Custom;
 using iDealSampleCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -34,10 +35,9 @@ namespace iDealSampleCore.Controllers
                 AcquirerUrl = _configuration["AcquirerUrl"],
                 MerchantId = _configuration["MerchantId"],
                 SubId = _configuration["SubId"],
-                DateTime = null
+                DateTime = null,
+                DropDownListIssuers = new List<SelectListItem>()
             };
-
-            pageIssuerListModel.DropDownListIssuers = new SelectList(Enumerable.Empty<string>());
 
             return View(pageIssuerListModel);
         }
@@ -52,21 +52,24 @@ namespace iDealSampleCore.Controllers
                 DateTime = DateTime.Now
             };
 
-            pageIssuerListModel.DropDownListIssuers = new SelectList(Enumerable.Empty<string>());
-            ViewData["Issuers"] = new SelectList(Enumerable.Empty<string>());
+            pageIssuerListModel.DropDownListIssuers =
+                pageIssuerListModel
+                    .GetIssuers()
+                    .GetIssuerSelectList();
 
             return View("PageIssuerList", pageIssuerListModel);
         }
 
-        public IActionResult TransActionRequest()
+        //[HttpPost]
+        public IActionResult TransActionRequest(PageIssuerListModel pageIssuerListModel)
         {
-            var pageIssuerListModel = new PageIssuerListModel
-            {
-                AcquirerUrl = _configuration["AcquirerUrl"],
-                MerchantId = _configuration["MerchantId"],
-                SubId = _configuration["SubId"],
-                DateTime = null
-            };
+            //var pageIssuerListModel = new PageIssuerListModel
+            //{
+            //    AcquirerUrl = _configuration["AcquirerUrl"],
+            //    MerchantId = _configuration["MerchantId"],
+            //    SubId = _configuration["SubId"],
+            //    DateTime = null
+            //};
 
             return View("PageIssuerList", pageIssuerListModel);
         }
@@ -74,6 +77,8 @@ namespace iDealSampleCore.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            _logger.LogError($"Error, RequestId/TraceIdentifier = {Activity.Current?.Id ?? HttpContext.TraceIdentifier} ");
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
