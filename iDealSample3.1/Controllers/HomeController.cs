@@ -89,6 +89,17 @@ namespace iDealSampleCore.Controllers
             return View("PageIssuerList", pageIssuerListModel);
         }
 
+        [HttpGet]
+        public IActionResult PageRequestTransaction()
+        {
+            var pageRequestTransactionModel = new PageRequestTransactionModel
+            {
+                IssuerId = "ING?"
+            };
+
+            return View(pageRequestTransactionModel);
+        }
+
         [HttpPost]
         public IActionResult PageRequestTransaction(PageRequestTransactionModel pageRequestTransactionModel)
         {

@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>iDealSampleCore</RootNamespace>
-  </PropertyGroup>
+	  <LangVersion>9.0</LangVersion>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Include="..\Test\iDealAdvancedConnector_48.Tests\app.config" Link="app.config" />
