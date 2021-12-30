@@ -6,85 +6,117 @@
 }
 
 <form asp-action="PageRequestTransaction">
-  <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+  <div style="font: 12pt arial;border-style: Solid;width: 800px;font-weight: normal;">
     Functie-parameters:<br />
-    <dl class="row">
-      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+    <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px;">
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
         <label asp-for="IssuerId"></label>
       </dt>
-      <dd class="col-sm-10" style="margin-bottom: 0">
-        <input asp-for="IssuerId"  />
-        <span asp-validation-for="IssuerId" class="text-danger"></span>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        <input asp-for="IssuerId" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;" />
+        <span asp-validation-for="IssuerId" style="color: red; display: inline;"></span>
       </dd>
-      <div class="form-group">
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;padding: 0;">
         <label asp-for="PurchaseId"></label>
-        <input asp-for="PurchaseId" class="form-control" />
-        <span asp-validation-for="PurchaseId" class="text-danger"></span>
-      </div>
-      <div class="form-group">
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        <input asp-for="PurchaseId" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;" />
+        <span asp-validation-for="PurchaseId" style="color: red; display: inline;"></span>
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;padding: 0;">
         <label asp-for="Amount"></label>
-        <input asp-for="Amount" class="form-control" />
-        <span asp-validation-for="Amount" class="text-danger"></span>
-      </div>
-      <div class="form-group">
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        <input asp-for="Amount" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;" />
+        <span asp-validation-for="Amount" style="color: red; display: inline;"></span>
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;padding: 0;">
         <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
-      </div>
-      <div class="form-group">
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        <input asp-for="Description" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;" />
+        <span asp-validation-for="Description" style="color: red; display: inline;"></span>
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;padding: 0;">
         <label asp-for="EntranceCode"></label>
-        <input asp-for="EntranceCode" class="form-control" />
-        <span asp-validation-for="EntranceCode" class="text-danger"></span>
-      </div>
-      <div class="form-group">
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        <input asp-for="EntranceCode" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;" />
+        <span asp-validation-for="EntranceCode" style="color: red; display: inline;"></span>
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;padding: 0;">
         <label asp-for="ExpirationPeriod"></label>
-        <input asp-for="ExpirationPeriod" class="form-control" />
-        <span asp-validation-for="ExpirationPeriod" class="text-danger"></span>
-      </div>
-      <div class="form-group">
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        <input asp-for="ExpirationPeriod" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;" />
+        <span asp-validation-for="ExpirationPeriod" style="color: red; display: inline;"></span>
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
         <label asp-for="AcquirerUrl"></label>
-        <input asp-for="AcquirerUrl" class="form-control" />
-        <span asp-validation-for="AcquirerUrl" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="MerchantId"></label>
-        <input asp-for="MerchantId" class="form-control" />
-        <span asp-validation-for="MerchantId" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="SubId"></label>
-        <input asp-for="SubId" class="form-control" />
-        <span asp-validation-for="SubId" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="AcquirerId"></label>
-        <input asp-for="AcquirerId" class="form-control" />
-        <span asp-validation-for="AcquirerId" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="TransactionId"></label>
-        <input asp-for="TransactionId" class="form-control" />
-        <span asp-validation-for="TransactionId" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="IssuerAuthentication"></label>
-        <input asp-for="IssuerAuthentication" class="form-control" />
-        <span asp-validation-for="IssuerAuthentication" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="Url"></label>
-        <input asp-for="Url" class="form-control" />
-        <span asp-validation-for="Url" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
-      </div>
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        <input asp-for="AcquirerUrl" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;; font-size: 13px" />
+        <span asp-validation-for="AcquirerUrl" style="color: red; display: inline;"></span>
+      </dd>
     </dl>
+  </div>
+  &nbsp;
+  <div style="font: 12pt arial; border-style: Solid; width: 800px; font-weight: normal;">
+    Vanuit configuratie:<br />
+    <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px; ">
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+        @Html.DisplayNameFor(model => model.MerchantId)
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        @Html.DisplayFor(model => model.MerchantId, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+        @Html.DisplayNameFor(model => model.SubId)
+      </dt>
+      <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+        @Html.DisplayFor(model => model.SubId, new { @style = "width:351px;" })
+      </dd>
+    </dl>
+  </div>
+  &nbsp;
+  <div style="font: 12pt arial; border-style: Solid; width: 800px; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center;">
+    <button asp-area="" asp-controller="Home" asp-action="PageRequestTransaction" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Request Transaction</button>
+  </div>
+  &nbsp;
+  <div style="font: 12pt arial;border-style: Solid;width: 800px;font-weight: normal;">
+    Resultaat:<br />
+  <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px;">
+    <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+      @Html.DisplayNameFor(model => model.AcquirerId)
+    </dt>
+    <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+      @Html.DisplayFor(model => model.AcquirerId, new { @style = "width:351px;" })
+    </dd>
+    <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+      @Html.DisplayNameFor(model => model.TransactionId)
+    </dt>
+    <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+      @Html.DisplayFor(model => model.TransactionId, new { @style = "width:351px;" })
+    </dd>
+    <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+      @Html.DisplayNameFor(model => model.IssuerAuthenticationUrl)
+    </dt>
+    <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+      @Html.DisplayFor(model => model.IssuerAuthenticationUrl, new { @style = "width:351px;display: inline-block; margin-bottom: 0; word-wrap: normal; word-break: break-all;" })
+    </dd>
+  </dl>
+  </div>
+    &nbsp;
+  <div style="font: 12pt arial;border-style: Solid;width: 800px;font-weight: normal; vert-align: middle; horiz-align: center; text-align: center;">
+    IssuerId must be a number!
+  </div>
+  <div class="form-group">
+    <input type="submit" value="Save" class="btn btn-primary" />
   </div>
 </form>
 
 <div>
-  <a asp-action="Index">Back to List</a>
+  <a asp-action="Index">Back to Home</a>
 </div>
 
 @section Scripts {
