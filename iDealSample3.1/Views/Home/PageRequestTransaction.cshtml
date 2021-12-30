@@ -1,0 +1,94 @@
+﻿@model iDealSampleCore.Models.PageRequestTransactionModel
+
+@{
+    ViewData["Title"] = "PageRequestTransaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>PageRequestTransaction</h1>
+
+<h4>PageRequestTransactionModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PageRequestTransaction">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IssuerId" class="control-label"></label>
+                <input asp-for="IssuerId" class="form-control" />
+                <span asp-validation-for="IssuerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseId" class="control-label"></label>
+                <input asp-for="PurchaseId" class="form-control" />
+                <span asp-validation-for="PurchaseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EntranceCode" class="control-label"></label>
+                <input asp-for="EntranceCode" class="form-control" />
+                <span asp-validation-for="EntranceCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpirationPeriod" class="control-label"></label>
+                <input asp-for="ExpirationPeriod" class="form-control" />
+                <span asp-validation-for="ExpirationPeriod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AcquirerUrl" class="control-label"></label>
+                <input asp-for="AcquirerUrl" class="form-control" />
+                <span asp-validation-for="AcquirerUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MerchantId" class="control-label"></label>
+                <input asp-for="MerchantId" class="form-control" />
+                <span asp-validation-for="MerchantId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubId" class="control-label"></label>
+                <input asp-for="SubId" class="form-control" />
+                <span asp-validation-for="SubId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AcquirerId" class="control-label"></label>
+                <input asp-for="AcquirerId" class="form-control" />
+                <span asp-validation-for="AcquirerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TransactionId" class="control-label"></label>
+                <input asp-for="TransactionId" class="form-control" />
+                <span asp-validation-for="TransactionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IssuerAuthentication" class="control-label"></label>
+                <input asp-for="IssuerAuthentication" class="form-control" />
+                <span asp-validation-for="IssuerAuthentication" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

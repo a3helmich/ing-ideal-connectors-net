@@ -19,10 +19,10 @@ namespace iDealSampleCore.Models
         [Display(Name = "DateTime:")]
         public DateTime? DateTime { get; set; }
 
-        [RegularExpression("[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}")]
         [Display(Name = "Issuer List:")]
         public List<SelectListItem> DropDownListIssuers { get; set; }
 
-        public string SelectedIssuer { get; set; }
+        [RegularExpression("[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}", ErrorMessage = "Format for issuer id not correct.")]
+        public string SelectedIssuerId { get; set; }
     }
 }

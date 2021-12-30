@@ -45,33 +45,28 @@
   </div>
   &nbsp;
   <form method="post">
-    <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
-      Resultaat:<br />
+    <div style="font: 12pt arial; border-style: Solid; font-weight: normal; width: 800px;">
+      Resultaat:<br/>
       <dl class="row" style="margin-bottom: 0">
-        <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+        <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 151px;">
           @Html.DisplayNameFor(model => model.DateTime)
         </dt>
         <dd class="col-sm-10" style="margin-bottom: 0">
           @Html.DisplayFor(model => model.DateTime, new { @style = "width:351px;" })
         </dd>
-        <br />
-        <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px;">
+        <br/>
+        <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 151px;">
           @Html.DisplayNameFor(model => model.DropDownListIssuers)
         </dt>
         <dd class="col-sm-10" style="margin-bottom: 0">
-          <select asp-items="Model.DropDownListIssuers" asp-for="SelectedIssuer" style="width:200px;border-width: 1px; font-size: 14px"></select>
+          <select asp-items="Model.DropDownListIssuers" asp-for="SelectedIssuerId" style="width: 200px; border-width: 1px; font-size: 14px"></select>
+          <span asp-validation-for="SelectedIssuerId" style="color: red; display: inline;"></span>
         </dd>
       </dl>
-      <asp:RegularExpressionValidator ID="RegularExpressionIssuerList" runat="server" ControlToValidate="DropDownListIssuers"
-                                      ErrorMessage="RegularExpressionValidator" ValidationExpression="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}"
-                                      Display="Dynamic">Format for issuer id not correct.</asp:RegularExpressionValidator>
-      <span asp-validation-for="DropDownListIssuers"></span>
     </div>
     &nbsp;
-    <div style="border-style: Solid;width: 800px; horiz-align: center; text-align: center; vertical-align: center;">
-      @*<div  style="border-style: none; width: 200px; border-width: 0px; padding: 0; background-color: transparent; horiz-align: center; text-align: center; vertical-align: center;">*@
-      <button asp-area="" asp-controller="Home" asp-action="TransActionRequest" style="display: inline-block;font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;margin: 0">Transaction Request</button>
-      @*</div>*@
+    <div style="border-style: Solid; width: 800px; horiz-align: center; text-align: center; vertical-align: center;">
+      <button asp-area="" asp-controller="Home" asp-action="TransActionRequest" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Transaction Request</button>
     </div>
   </form>
 </div>

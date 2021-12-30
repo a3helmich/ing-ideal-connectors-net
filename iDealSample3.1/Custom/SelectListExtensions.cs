@@ -27,15 +27,12 @@ namespace iDealSampleCore.Custom
 
             var issuerSelectItemList = new List<SelectListItem> {
                 new("Kies uw bank...", "-1", true),
-                new("--Overige banken---", "-1")
+                new("--Overige banken---", "-2")
             };
 
             foreach (var country in issuers.Countries)
             {
-                var listGroup = new SelectListGroup
-                {
-                    Name = country.CountryNames
-                };
+                var listGroup = new SelectListGroup { Name = country.CountryNames };
 
                 issuerSelectItemList.AddRange(country.Issuers.Select(issuer => new SelectListItem(issuer.Name, issuer.Id) { Group = listGroup }));
             }

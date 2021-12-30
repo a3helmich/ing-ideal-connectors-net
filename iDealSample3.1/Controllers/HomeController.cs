@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace iDealSampleCore.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,7 +18,7 @@ namespace iDealSampleCore.Controllers
 
         private readonly IConfiguration _configuration;
 
-        private static List<SelectListItem> _issuerListModel = null;
+        private static List<SelectListItem> _issuerListModel;
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
@@ -25,11 +26,13 @@ namespace iDealSampleCore.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult PageIssuerList()
         {
             var pageIssuerListModel = new PageIssuerListModel
@@ -44,6 +47,7 @@ namespace iDealSampleCore.Controllers
             return View(pageIssuerListModel);
         }
 
+        [HttpGet]
         public IActionResult GetIssuerList()
         {
             var pageIssuerListModel = new PageIssuerListModel
@@ -63,8 +67,19 @@ namespace iDealSampleCore.Controllers
             return View("PageIssuerList", pageIssuerListModel);
         }
 
+        [HttpPost]
         public IActionResult TransActionRequest(PageIssuerListModel pageIssuerListModel)
         {
+            if (TryValidateModel(pageIssuerListModel))
+            {
+                var pageRequestTransactionModel = new PageRequestTransactionModel
+                {
+                    IssuerId = pageIssuerListModel.SelectedIssuerId
+                };
+
+                return View("PageRequestTransaction", pageRequestTransactionModel);
+            }
+
             pageIssuerListModel.AcquirerUrl = _configuration["AcquirerUrl"];
             pageIssuerListModel.MerchantId = _configuration["MerchantId"];
             pageIssuerListModel.SubId = _configuration["SubId"];
@@ -72,6 +87,12 @@ namespace iDealSampleCore.Controllers
             pageIssuerListModel.DropDownListIssuers = _issuerListModel;
 
             return View("PageIssuerList", pageIssuerListModel);
+        }
+
+        [HttpPost]
+        public IActionResult PageRequestTransaction(PageRequestTransactionModel pageRequestTransactionModel)
+        {
+            return View("PageRequestTransaction", pageRequestTransactionModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
