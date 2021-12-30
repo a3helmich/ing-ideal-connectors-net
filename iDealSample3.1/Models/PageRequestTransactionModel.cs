@@ -55,5 +55,7 @@ namespace iDealSampleCore.Models
         [MaxLength(512)]
         [Display(Name = "Issuer Authentication Url:")]
         public string IssuerAuthenticationUrl { get; set; }
+
+        public bool IssuerAuthenticationDisabled { get; set; } = true;
     }
 }

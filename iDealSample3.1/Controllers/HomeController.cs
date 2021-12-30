@@ -119,7 +119,7 @@ namespace iDealSampleCore.Controllers
             {
                 if (RequestTransaction(pageRequestTransactionModel))
                 {
-                    // enable issuer authentication
+                    pageRequestTransactionModel.IssuerAuthenticationDisabled = false;
                 }
 
                 return View("PageRequestTransaction", pageRequestTransactionModel);
@@ -127,6 +127,13 @@ namespace iDealSampleCore.Controllers
 
             return View("PageRequestTransaction", pageRequestTransactionModel);
         }
+
+        [HttpPost]
+        public IActionResult IssuerAuthentication(PageRequestTransactionModel pageRequestTransactionModel)
+        {
+            return View("PageRequestTransaction", pageRequestTransactionModel);
+        }
+
 
         private static bool RequestTransaction(PageRequestTransactionModel pageRequestTransactionModel)
         {
