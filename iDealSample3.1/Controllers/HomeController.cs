@@ -128,10 +128,11 @@ namespace iDealSampleCore.Controllers
             return View("PageRequestTransaction", pageRequestTransactionModel);
         }
 
-        [HttpPost]
-        public IActionResult IssuerAuthentication(PageRequestTransactionModel pageRequestTransactionModel)
+        public IActionResult PageRequestTransactionStatus(string trxid, string ec)
         {
-            return View("PageRequestTransaction", pageRequestTransactionModel);
+            var pageRequestTransactionModelStatus = new PageRequestTransactionStatusModel();
+
+            return View("PageRequestTransactionStatus", pageRequestTransactionModelStatus);
         }
 
 
