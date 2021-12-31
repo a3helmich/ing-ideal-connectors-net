@@ -38,7 +38,7 @@ namespace iDealSampleCore.Models
 
         [MaxLength(512)]
         [Display(Name = "Merchant Return Url:")]
-        public string AcquirerUrl { get; set; }
+        public string MerchantUrl { get; set; }
 
         [Display(Name = "Merchant Id:")]
         public string MerchantId { get; set; }
@@ -56,6 +56,6 @@ namespace iDealSampleCore.Models
         [Display(Name = "Issuer Authentication Url:")]
         public string IssuerAuthenticationUrl { get; set; }
 
-        public bool IssuerAuthenticationDisabled { get; set; } = true;
+        public bool IssuerAuthenticationValid { get; set; }
     }
 }

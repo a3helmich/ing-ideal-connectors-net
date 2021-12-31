@@ -52,11 +52,11 @@
         <span asp-validation-for="ExpirationPeriod" style="color: red; display: inline;"></span>
       </dd>
       <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
-        <label asp-for="AcquirerUrl"></label>
+        <label asp-for="MerchantUrl"></label>
       </dt>
       <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
-        <input asp-for="AcquirerUrl" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;; font-size: 13px" />
-        <span asp-validation-for="AcquirerUrl" style="color: red; display: inline;"></span>
+        <input asp-for="MerchantUrl" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;; font-size: 13px" />
+        <span asp-validation-for="MerchantUrl" style="color: red; display: inline;"></span>
       </dd>
     </dl>
   </div>
@@ -107,22 +107,20 @@
     </dl>
   </div>
   &nbsp;
-  <div style="font: 12pt arial; border-style: Solid; width: 800px; font-weight: normal; vert-align: middle; horiz-align: center; text-align: center;">
-    <div>
-      IssuerId must be a number!
-    </div>
-    <div>
-      @if (Model.IssuerAuthenticationDisabled)
-      {
-        <button disabled asp-area="" asp-controller="Home" asp-action="" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Issuer Authentication</button>
-      }
-      else
-      {
-        <button asp-area="" asp-controller="Home" asp-action="IssuerAuthentication" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Issuer Authentication</button>
-      }
-    </div>
-  </div>
 </form>
+<div style="font: 12pt arial; border-style: Solid; width: 800px; font-weight: normal; vert-align: middle; horiz-align: center; text-align: center;">
+  @if (Model.IssuerAuthenticationValid)
+  {
+    <a href='@Model.IssuerAuthenticationUrl' style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">
+      <button style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">Issuer Authentication</button>
+    </a>
+    <button asp-area="" asp-controller="Home" asp-action="IssuerAuthentication" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Issuer Authentication</button>
+  }
+  else
+  {
+    <button disabled style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Issuer Authentication</button>
+  }
+</div>
 
 <div>
   <a asp-action="Index">Back to Home</a>

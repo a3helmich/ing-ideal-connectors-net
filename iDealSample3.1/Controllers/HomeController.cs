@@ -81,7 +81,7 @@ namespace iDealSampleCore.Controllers
                 {
                     IssuerId = pageIssuerListModel.SelectedIssuerId,
                     ExpirationPeriod = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["ExpirationPeriod"]),
-                    AcquirerUrl = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["MerchantReturnUrl"]),
+                    MerchantUrl = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["MerchantReturnUrl"]),
                     MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
                     SubId = HttpUtility.HtmlEncode(_configuration["SubId"])
                 };
@@ -104,7 +104,7 @@ namespace iDealSampleCore.Controllers
             var pageRequestTransactionModel = new PageRequestTransactionModel
             {
                 ExpirationPeriod = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["ExpirationPeriod"]),
-                AcquirerUrl = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["MerchantReturnUrl"]),
+                MerchantUrl = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["MerchantReturnUrl"]),
                 MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
                 SubId = HttpUtility.HtmlEncode(_configuration["SubId"])
             };
@@ -119,7 +119,7 @@ namespace iDealSampleCore.Controllers
             {
                 if (RequestTransaction(pageRequestTransactionModel))
                 {
-                    pageRequestTransactionModel.IssuerAuthenticationDisabled = false;
+                    pageRequestTransactionModel.IssuerAuthenticationValid = true;
                 }
 
                 return View("PageRequestTransaction", pageRequestTransactionModel);
@@ -154,9 +154,9 @@ namespace iDealSampleCore.Controllers
                 transaction.IssuerId = pageRequestTransactionModel.IssuerId;
                 transaction.EntranceCode = pageRequestTransactionModel.EntranceCode;
 
-                var connector = Connector.CreateConnector(merchantId: pageRequestTransactionModel.MerchantId, merchantSubId: pageRequestTransactionModel.SubId, acquirerUrl: pageRequestTransactionModel.AcquirerUrl);
+                var connector = Connector.CreateConnector(merchantId: pageRequestTransactionModel.MerchantId, merchantSubId: pageRequestTransactionModel.SubId, acquirerUrl: pageRequestTransactionModel.MerchantUrl);
                 connector.ExpirationPeriod = HttpUtility.HtmlEncode(pageRequestTransactionModel.ExpirationPeriod);
-                connector.MerchantReturnUrl = new Uri(pageRequestTransactionModel.AcquirerUrl);
+                connector.MerchantReturnUrl = new Uri(pageRequestTransactionModel.MerchantUrl);
 
                 transaction = connector.RequestTransaction(transaction);
                 pageRequestTransactionModel.TransactionId = HttpUtility.HtmlEncode(transaction.Id);
