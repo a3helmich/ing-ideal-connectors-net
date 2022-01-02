@@ -37,5 +37,8 @@ namespace iDealSampleCore.Models
 
         [Display(Name = "Signature Value:")]
         public string SignatureValue { get; set; }
+
+        [Display(Name = "Fingerprint Value:")]
+        public string Fingerprint { get; set; }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Web;
 using iDealSampleCore.Custom;
 using iDealSampleCore.Models;
@@ -115,26 +117,37 @@ namespace iDealSampleCore.Controllers
         [HttpPost]
         public IActionResult PageRequestTransaction(PageRequestTransactionModel pageRequestTransactionModel)
         {
-            if (TryValidateModel(pageRequestTransactionModel))
+            if (TryValidateModel(pageRequestTransactionModel) && RequestTransaction(pageRequestTransactionModel))
             {
-                if (RequestTransaction(pageRequestTransactionModel))
-                {
-                    pageRequestTransactionModel.IssuerAuthenticationValid = true;
-                }
-
-                return View("PageRequestTransaction", pageRequestTransactionModel);
+                pageRequestTransactionModel.IssuerAuthenticationValid = true;
             }
 
             return View("PageRequestTransaction", pageRequestTransactionModel);
         }
 
+        [HttpGet]
         public IActionResult PageRequestTransactionStatus(string trxid, string ec)
         {
-            var pageRequestTransactionModelStatus = new PageRequestTransactionStatusModel();
+            var pageRequestTransactionModelStatus = new PageRequestTransactionStatusModel
+            {
+                TransactionId = trxid,
+                MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
+                SubId = HttpUtility.HtmlEncode(_configuration["SubId"])
+            };
+
+            return View(pageRequestTransactionModelStatus);
+        }
+
+        [HttpPost]
+        public IActionResult GetRequestTransactionStatus(PageRequestTransactionStatusModel pageRequestTransactionModelStatus)
+        {
+            pageRequestTransactionModelStatus.MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]);
+            pageRequestTransactionModelStatus.SubId = HttpUtility.HtmlEncode(_configuration["SubId"]);
+
+            RequestTransactionStatus(pageRequestTransactionModelStatus);
 
             return View("PageRequestTransactionStatus", pageRequestTransactionModelStatus);
         }
-
 
         private static bool RequestTransaction(PageRequestTransactionModel pageRequestTransactionModel)
         {
@@ -171,6 +184,42 @@ namespace iDealSampleCore.Controllers
                 //LabelErrorValue.Text = ex.ErrorRes.Error.consumerMessage;
                 return false;
             }
+        }
+
+        private static void RequestTransactionStatus(PageRequestTransactionStatusModel pageRequestTransactionModelStatus)
+        {
+            try
+            {
+                var connector = Connector.CreateConnector(merchantId: pageRequestTransactionModelStatus.MerchantId, merchantSubId: pageRequestTransactionModelStatus.SubId);
+                var transaction = connector.RequestTransactionStatus(pageRequestTransactionModelStatus.TransactionId);
+
+                pageRequestTransactionModelStatus.AcquirerId = transaction.AcquirerId;
+                pageRequestTransactionModelStatus.TransactionStatus = transaction.Status.ToString();
+                pageRequestTransactionModelStatus.ConsumerName = transaction.ConsumerName;
+                pageRequestTransactionModelStatus.Fingerprint = transaction.Fingerprint;
+                pageRequestTransactionModelStatus.ConsumerIban = transaction.ConsumerIBAN;
+                pageRequestTransactionModelStatus.ConsumerBic = transaction.ConsumerBIC;
+                pageRequestTransactionModelStatus.Amount = transaction.Amount.ToString(CultureInfo.InvariantCulture);
+                pageRequestTransactionModelStatus.Currency = transaction.Currency;
+
+                var signatureString = ByteArrayToHexString(transaction.SignatureValue);
+
+                // Place newlines in Hex String
+                for (var i = 512; i > 0; i -= 32)
+                {
+                    signatureString = signatureString.Substring(0, i) + " " + signatureString.Substring(i);
+                }
+
+                pageRequestTransactionModelStatus.SignatureValue = signatureString;
+            }
+            catch (IDealException ex)
+            {
+                //LabelErrorValue.Text = ex.ErrorRes.Error.consumerMessage;
+            }
+        }
+        private static string ByteArrayToHexString(byte[] bytes)
+        {
+            return string.Join(string.Empty, bytes.Select(b => b.ToString("X2"))); 
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

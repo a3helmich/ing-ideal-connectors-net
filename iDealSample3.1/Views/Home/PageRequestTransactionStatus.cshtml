@@ -5,80 +5,101 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>PageRequestTransactionStatus</h1>
-
-<div>
-    <h4>PageRequestTransactionStatusModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionId)
+<form asp-action="PageRequestTransactionStatus">
+  <div>
+    <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+      Functie-parameters:<br />
+      <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px;">
+        <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+          <label asp-for="TransactionId"></label>
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransactionId)
+        <dd class="col-sm-10" style="display: inline-block; margin-bottom: 0; width: 351px; border-width: 0; border-style: none">
+          <input asp-for="TransactionId" style="border-width: 1px; width: 351px;display: inline-block; margin-bottom: 0;" />
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MerchantId)
+      </dl>
+    </div>
+    &nbsp;
+    <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+      Vanuit configuratie:<br />
+      <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px;">
+        <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+          @Html.DisplayNameFor(model => model.MerchantId)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MerchantId)
+        <dd class="col-sm-10" style="margin-bottom: 0">
+          @Html.DisplayFor(model => model.MerchantId, new { @style = "width:351px;" })
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SubId)
+        <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+          @Html.DisplayNameFor(model => model.SubId)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SubId)
+        <dd class="col-sm-10" style="margin-bottom: 0">
+          @Html.DisplayFor(model => model.SubId, new { @style = "width:351px;" })
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AcquirerId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AcquirerId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransactionStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransactionStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ConsumerName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ConsumerName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ConsumerIban)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ConsumerIban)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ConsumerBic)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ConsumerBic)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Currency)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Currency)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SignatureValue)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SignatureValue)
-        </dd>
+      </dl>
+    </div>
+    &nbsp;
+    <div style="font: 12pt arial; border-style: Solid; width: 800px; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center;">
+      <button asp-area="" asp-controller="Home" asp-action="GetRequestTransactionStatus" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Request Transaction Status</button>
+    </div>
+  </div>
+  &nbsp;
+  <div style="font: 12pt arial; border-style: Solid; font-weight: normal; width: 800px;">
+    Resultaat:<br/>
+    <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px;">
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.AcquirerId)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.AcquirerId, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.TransactionStatus)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.TransactionStatus, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.ConsumerName)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.ConsumerName, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.ConsumerIban)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.ConsumerIban, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.ConsumerBic)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.ConsumerBic, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.Amount)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.Amount, new { @style = "width:538px;" })
+      </dd>
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.Currency)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.Currency, new { @style = "width:538px;" })
+      </dd>
+      <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 251px; padding: 0;">
+        @Html.DisplayNameFor(model => model.SignatureValue)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        <div style="border: none; border-width: 0; border-style: none; width: 351px">
+          @Html.DisplayFor(model => model.SignatureValue, new { @style = "width:538px;" })
+        </div>
+      </dd>
     </dl>
-</div>
+  </div>
+  &nbsp;
+</form>
+
 <div>
     <a asp-action="Index">Back to Home</a>
 </div>
