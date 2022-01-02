@@ -1,3 +1,22 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  /*font-family: inherit;*/
+  vertical-align: baseline;
+}
+
 html {
   font-size: 14px;
 }
@@ -15,4 +34,50 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.index-cell td {
+  border-style: solid;
+  border-width: 1px;
+  padding: 0 2px 0 2px;
+}
+
+.label-field {
+  padding: 0;
+}
+
+.value-field {
+  padding: 0;
+  padding-left: 30px;
+}
+
+.field-row {
+  margin-bottom: 0; 
+  margin-left: 0;
+}
+
+.select-field {
+  width: 200px;
+  border-width: 1px;
+  font-size: 14px;
+}
+
+.table-layout {
+  cellpadding: 4px; 
+  cellspacing:0; 
+  border: 1px;
+}
+
+.detail-container {
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  font: 12pt arial;
+  width: 800px;
+}
+
+.detail-centered {
+  horiz-align: center;
+  text-align: center;
+  vertical-align: center;
 }

@@ -1,0 +1,59 @@
+﻿@model iDealSampleCore.Models.IssuerModel
+
+@{
+    ViewData["Title"] = "IAC";
+}
+
+<div>
+  <div class="detail-container">
+    <div>Functie-parameters:</div>
+    <div>(none)</div>
+  </div>
+  &nbsp;
+  <div class="detail-container">
+    <div>Vanuit configuratie:</div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.MerchantId) </div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.MerchantId)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.SubId) </div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.SubId)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.AcquirerUrl) </div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.AcquirerUrl)</div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="detail-container detail-centered">
+    <a asp-area="" asp-controller="Home" asp-action="GetIssuer" style="display: inline-block; border-width: 1px; font: 10pt arial; padding: .075rem .75rem;">
+      <button style="display: inline-block; border-width: 1px; font: 10pt arial;  padding: .075rem .75rem;">Get Issuer List</button>
+    </a>
+  </div>
+  &nbsp;
+  <form method="post">
+    <div class="detail-container">
+      <div>Resultaat:</div>
+      <div class="row field-row">
+        <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.DateTime)</div>
+        <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.DateTime)</div>
+      </div>
+      <div class="row field-row">
+        <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.DropDownListIssuers)</div>
+        <div class="col-sm-10 value-field">
+          <select  class="select-field" asp-items="Model?.DropDownListIssuers" asp-for="SelectedIssuerId"></select>
+          <span asp-validation-for="SelectedIssuerId" style="color: red; display: inline;"></span>
+        </div>
+      </div>
+    </div>
+    &nbsp;
+    <div class="detail-container detail-centered">
+      <button asp-area="" asp-controller="Home" asp-action="" style="display: inline-block; font: 10pt arial; padding: .075rem .75rem; margin: 0">Transaction Request</button>
+    </div>
+  </form>
+</div>
+&nbsp;
+<div>
+  <a asp-action="Index">Back to Home</a>
+</div>

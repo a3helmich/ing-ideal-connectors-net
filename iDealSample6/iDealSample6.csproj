@@ -7,4 +7,21 @@
     <RootNamespace>iDealSampleCore</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\RequestTransactionStatus\" />
+    <Folder Include="Views\RequestTransaction\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Test\iDealAdvancedConnector_48.Tests\app.config" Link="app.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\iDealAdvancedConnector\iDealAdvancedConnector.csproj" />
+  </ItemGroup>
+
 </Project>
