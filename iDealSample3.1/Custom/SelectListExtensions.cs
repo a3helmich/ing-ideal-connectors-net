@@ -9,7 +9,7 @@ namespace iDealSampleCore.Custom
 {
     internal static class SelectListExtensions
     {
-        public static Issuers GetIssuers(this PageIssuerListModel pageIssuerListModel)
+        public static Issuers GetIssuers(this PageIssuerModel pageIssuerListModel)
         {
             var connector = Connector.CreateConnector(merchantId: pageIssuerListModel.MerchantId, merchantSubId: pageIssuerListModel.SubId, acquirerUrl: pageIssuerListModel.AcquirerUrl);
 

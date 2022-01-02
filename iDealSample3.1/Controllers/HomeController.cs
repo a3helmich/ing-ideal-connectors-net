@@ -22,7 +22,6 @@ namespace iDealSampleCore.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-
         private readonly IConfiguration _configuration;
 
         private static List<SelectListItem> _issuerListModel;
@@ -42,7 +41,7 @@ namespace iDealSampleCore.Controllers
         [HttpGet]
         public IActionResult PageIssuerList()
         {
-            var pageIssuerListModel = new PageIssuerListModel
+            var pageIssuerListModel = new PageIssuerModel
             {
                 AcquirerUrl = HttpUtility.HtmlEncode(_configuration["AcquirerUrl"]),
                 MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
@@ -57,7 +56,7 @@ namespace iDealSampleCore.Controllers
         [HttpGet]
         public IActionResult GetIssuerList()
         {
-            var pageIssuerListModel = new PageIssuerListModel
+            var pageIssuerListModel = new PageIssuerModel
             {
                 AcquirerUrl = HttpUtility.HtmlEncode(_configuration["AcquirerUrl"]),
                 MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
@@ -75,7 +74,7 @@ namespace iDealSampleCore.Controllers
         }
 
         [HttpPost]
-        public IActionResult TransActionRequest(PageIssuerListModel pageIssuerListModel)
+        public IActionResult TransActionRequest(PageIssuerModel pageIssuerListModel)
         {
             if (TryValidateModel(pageIssuerListModel))
             {

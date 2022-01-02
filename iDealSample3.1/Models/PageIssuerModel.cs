@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace iDealSampleCore.Models
 {
-    public class PageIssuerListModel
+    public class PageIssuerModel
     {
         [Display(Name = "Merchant Id:")]
         public string MerchantId { get; set; }
