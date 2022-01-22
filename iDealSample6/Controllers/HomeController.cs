@@ -4,6 +4,7 @@ using iDealSampleCore.Custom;
 using iDealSampleCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace iDealSampleCore.Controllers
 {
@@ -41,7 +42,7 @@ namespace iDealSampleCore.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetIssuer()
+        public IActionResult GetIssuers()
         {
             var issuerListModel = new IssuerModel
             {
@@ -69,6 +70,46 @@ namespace iDealSampleCore.Controllers
                     .GetIssuers()
                     .GetIssuerSelectList();
             }
+        }
+
+        [HttpGet]
+        public IActionResult Transaction()
+        {
+            var transactionModel = new TransactionModel
+            {
+                ExpirationPeriod = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["ExpirationPeriod"]) ?? string.Empty,
+                MerchantUrl = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["MerchantReturnUrl"]) ?? string.Empty,
+                MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
+                SubId = HttpUtility.HtmlEncode(_configuration["SubId"])
+            };
+
+            return View(transactionModel);
+        }
+
+        [HttpPost]
+        public IActionResult TransActionRequest(IssuerModel pageIssuerListModel)
+        {
+            if (TryValidateModel(pageIssuerListModel))
+            {
+                var pageRequestTransactionModel = new TransactionModel
+                {
+                    IssuerId = pageIssuerListModel.SelectedIssuerId,
+                    ExpirationPeriod = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["ExpirationPeriod"]) ?? string.Empty,
+                    MerchantUrl = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["MerchantReturnUrl"]) ?? string.Empty,
+                    MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
+                    SubId = HttpUtility.HtmlEncode(_configuration["SubId"])
+                };
+
+                return View("Transaction", pageRequestTransactionModel);
+            }
+
+            pageIssuerListModel.AcquirerUrl = HttpUtility.HtmlEncode(_configuration["MerchantReturnUrl"]);
+            pageIssuerListModel.MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]);
+            pageIssuerListModel.SubId = HttpUtility.HtmlEncode(_configuration["SubId"]);
+            pageIssuerListModel.DateTime = DateTime.Now;
+            pageIssuerListModel.DropDownListIssuers = _issuerDropDownList!;
+
+            return View("Issuer", pageIssuerListModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

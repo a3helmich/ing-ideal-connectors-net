@@ -2,7 +2,7 @@
 
 namespace iDealSampleCore.Models
 {
-    public class RequestTransactionModel
+    public class TransactionModel
     {
         [RegularExpression("[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}", ErrorMessage = "Format for issuer id not correct.")]
         [Required(ErrorMessage = "IssuerId is mandatory")]
