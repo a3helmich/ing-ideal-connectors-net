@@ -1,7 +1,7 @@
 ﻿@model iDealSampleCore.Models.IssuerModel
 
 @{
-    ViewData["Title"] = "IAC";
+  ViewData["Title"] = "IAC";
 }
 
 <div>
@@ -26,12 +26,12 @@
     </div>
   </div>
   &nbsp;
-  <div class="detail-container detail-centered">
-    <a asp-area="" asp-controller="Home" asp-action="GetIssuer" style="display: inline-block; border-width: 1px; font: 10pt arial; padding: .075rem .75rem;">
-      <button style="display: inline-block; border-width: 1px; font: 10pt arial;  padding: .075rem .75rem;">Get Issuer List</button>
-    </a>
-  </div>
-  &nbsp;
+  <form method="get">
+    <div class="detail-container detail-centered">
+      <button asp-area="" asp-controller="Home" asp-action="GetIssuer" class="action-button" >Get Issuer List</button>
+    </div>
+    &nbsp;
+  </form>
   <form method="post">
     <div class="detail-container">
       <div>Resultaat:</div>
@@ -42,18 +42,18 @@
       <div class="row field-row">
         <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.DropDownListIssuers)</div>
         <div class="col-sm-10 value-field">
-          <select  class="select-field" asp-items="Model?.DropDownListIssuers" asp-for="SelectedIssuerId"></select>
-          <span asp-validation-for="SelectedIssuerId" style="color: red; display: inline;"></span>
+          <select class="select-field" asp-items="Model?.DropDownListIssuers" asp-for="SelectedIssuerId"></select>
+          <span asp-validation-for="SelectedIssuerId" class="validation-container"></span>
         </div>
       </div>
     </div>
     &nbsp;
     <div class="detail-container detail-centered">
-      <button asp-area="" asp-controller="Home" asp-action="" style="display: inline-block; font: 10pt arial; padding: .075rem .75rem; margin: 0">Transaction Request</button>
+      <button asp-area="" asp-controller="Home" asp-action="" class="action-button" >Transaction Request</button>
     </div>
   </form>
+  &nbsp;
 </div>
-&nbsp;
 <div>
   <a asp-action="Index">Back to Home</a>
 </div>

@@ -11,7 +11,8 @@ namespace iDealSampleCore.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-        private static List<SelectListItem>? _issuerListModel;
+        private static List<SelectListItem>? _issuerDropDownList;
+        private static readonly object _issuerLockObject = new();
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
@@ -50,13 +51,24 @@ namespace iDealSampleCore.Controllers
                 DateTime = DateTime.Now
             };
 
-            _issuerListModel ??= issuerListModel
-                .GetIssuers()
-                .GetIssuerSelectList();
-
-            issuerListModel.DropDownListIssuers = _issuerListModel;
+            issuerListModel.DropDownListIssuers = GetIssuerDropDownList(issuerListModel);
 
             return View("Issuer", issuerListModel);
+        }
+
+        private static List<SelectListItem> GetIssuerDropDownList(IssuerModel issuerListModel)
+        {
+            if (_issuerDropDownList != null)
+            {
+                return _issuerDropDownList;
+            }
+
+            lock (_issuerLockObject)
+            {
+                return _issuerDropDownList ??= issuerListModel
+                    .GetIssuers()
+                    .GetIssuerSelectList();
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
