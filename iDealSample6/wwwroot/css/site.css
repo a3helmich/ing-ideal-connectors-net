@@ -19,9 +19,20 @@ body {
 }
 
 button {
-  border: 1px;
+  padding: .075rem .75rem;
+  border-width: 2px;
   border-style: solid;
-  background-color: rgb(239, 239, 239)
+  background-color: rgb(239, 239, 239);
+}
+
+  button:disabled {
+    border-color: rgb(195, 195, 195);
+    background-color: rgb(249, 249, 249);
+    color: rgb(195, 195, 195);
+  }
+
+.action-button {
+  font: 10pt arial;
 }
 
 select {
@@ -83,12 +94,6 @@ select {
 
 .td-align-center {
   text-align: center;
-}
-
-.action-button {
-  font: 10pt arial;
-  padding: .1rem;
-  margin: 0;
 }
 
 .detail-container {

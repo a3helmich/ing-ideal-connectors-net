@@ -47,7 +47,7 @@ namespace iDealSampleCore.Controllers
                 MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
                 SubId = HttpUtility.HtmlEncode(_configuration["SubId"]),
                 DateTime = null,
-                DropDownListIssuers = new List<SelectListItem>()
+                IssuersDropDownList = new List<SelectListItem>()
             };
 
             return View(pageIssuerListModel);
@@ -68,7 +68,7 @@ namespace iDealSampleCore.Controllers
                 .GetIssuers()
                 .GetIssuerSelectList();
 
-            pageIssuerListModel.DropDownListIssuers = _issuerListModel;
+            pageIssuerListModel.IssuersDropDownList = _issuerListModel;
 
             return View("PageIssuerList", pageIssuerListModel);
         }
@@ -94,7 +94,7 @@ namespace iDealSampleCore.Controllers
             pageIssuerListModel.MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]);
             pageIssuerListModel.SubId = HttpUtility.HtmlEncode(_configuration["SubId"]);
             pageIssuerListModel.DateTime = DateTime.Now;
-            pageIssuerListModel.DropDownListIssuers = _issuerListModel;
+            pageIssuerListModel.IssuersDropDownList = _issuerListModel;
 
             return View("PageIssuerList", pageIssuerListModel);
         }
@@ -167,7 +167,7 @@ namespace iDealSampleCore.Controllers
                 transaction.IssuerId = pageRequestTransactionModel.IssuerId;
                 transaction.EntranceCode = pageRequestTransactionModel.EntranceCode;
 
-                var connector = Connector.CreateConnector(merchantId: pageRequestTransactionModel.MerchantId, merchantSubId: pageRequestTransactionModel.SubId, acquirerUrl: pageRequestTransactionModel.MerchantUrl);
+                var connector = Connector.CreateConnector();
                 connector.ExpirationPeriod = HttpUtility.HtmlEncode(pageRequestTransactionModel.ExpirationPeriod);
                 connector.MerchantReturnUrl = new Uri(pageRequestTransactionModel.MerchantUrl);
 
@@ -216,6 +216,7 @@ namespace iDealSampleCore.Controllers
                 //LabelErrorValue.Text = ex.ErrorRes.Error.consumerMessage;
             }
         }
+
         private static string ByteArrayToHexString(byte[] bytes)
         {
             return string.Join(string.Empty, bytes.Select(b => b.ToString("X2"))); 

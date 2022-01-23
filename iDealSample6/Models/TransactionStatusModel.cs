@@ -2,7 +2,7 @@
 
 namespace iDealSampleCore.Models
 {
-    public class RequestTransactionStatusModel
+    public class TransactionStatusModel
     {
 
         [Display(Name = "Transaction Id:")]

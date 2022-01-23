@@ -1,7 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Web;
 using iDealSampleCore.Custom;
 using iDealSampleCore.Models;
+using ING.iDealAdvanced;
+using ING.iDealAdvanced.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
@@ -10,14 +13,12 @@ namespace iDealSampleCore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-        private static List<SelectListItem>? _issuerDropDownList;
-        private static readonly object _issuerLockObject = new();
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+        public HomeController(/*ILogger<HomeController> logger, */IConfiguration configuration)
         {
-            _logger = logger;
+            //_logger = logger;
             _configuration = configuration;
         }
 
@@ -35,7 +36,7 @@ namespace iDealSampleCore.Controllers
                 MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
                 SubId = HttpUtility.HtmlEncode(_configuration["SubId"]),
                 DateTime = null,
-                DropDownListIssuers = new List<SelectListItem>()
+                IssuersDropDownList = new List<SelectListItem>()
             };
 
             return View("Issuer", issuerModel);
@@ -44,7 +45,7 @@ namespace iDealSampleCore.Controllers
         [HttpGet]
         public IActionResult GetIssuers()
         {
-            var issuerListModel = new IssuerModel
+            var issuerModel = new IssuerModel
             {
                 AcquirerUrl = HttpUtility.HtmlEncode(_configuration["AcquirerUrl"]),
                 MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
@@ -52,24 +53,9 @@ namespace iDealSampleCore.Controllers
                 DateTime = DateTime.Now
             };
 
-            issuerListModel.DropDownListIssuers = GetIssuerDropDownList(issuerListModel);
+            issuerModel.SetIssuersDropDownList();
 
-            return View("Issuer", issuerListModel);
-        }
-
-        private static List<SelectListItem> GetIssuerDropDownList(IssuerModel issuerListModel)
-        {
-            if (_issuerDropDownList != null)
-            {
-                return _issuerDropDownList;
-            }
-
-            lock (_issuerLockObject)
-            {
-                return _issuerDropDownList ??= issuerListModel
-                    .GetIssuers()
-                    .GetIssuerSelectList();
-            }
+            return View("Issuer", issuerModel);
         }
 
         [HttpGet]
@@ -87,29 +73,105 @@ namespace iDealSampleCore.Controllers
         }
 
         [HttpPost]
-        public IActionResult TransActionRequest(IssuerModel pageIssuerListModel)
+        public IActionResult TransActionRequest(IssuerModel issuerModel)
         {
-            if (TryValidateModel(pageIssuerListModel))
+            if (TryValidateModel(issuerModel))
             {
-                var pageRequestTransactionModel = new TransactionModel
+                var transactionModel = new TransactionModel
                 {
-                    IssuerId = pageIssuerListModel.SelectedIssuerId,
+                    IssuerId = issuerModel.SelectedIssuerId,
                     ExpirationPeriod = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["ExpirationPeriod"]) ?? string.Empty,
-                    MerchantUrl = HttpUtility.HtmlEncode(ConfigurationManager.AppSettings["MerchantReturnUrl"]) ?? string.Empty,
+                    MerchantUrl = HttpUtility.HtmlEncode(_configuration["MerchantReturnUrl"]),
                     MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
                     SubId = HttpUtility.HtmlEncode(_configuration["SubId"])
                 };
 
-                return View("Transaction", pageRequestTransactionModel);
+                return View("Transaction", transactionModel);
             }
 
-            pageIssuerListModel.AcquirerUrl = HttpUtility.HtmlEncode(_configuration["MerchantReturnUrl"]);
-            pageIssuerListModel.MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]);
-            pageIssuerListModel.SubId = HttpUtility.HtmlEncode(_configuration["SubId"]);
-            pageIssuerListModel.DateTime = DateTime.Now;
-            pageIssuerListModel.DropDownListIssuers = _issuerDropDownList!;
+            issuerModel.AcquirerUrl = HttpUtility.HtmlEncode(_configuration["MerchantReturnUrl"]);
+            issuerModel.MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]);
+            issuerModel.SubId = HttpUtility.HtmlEncode(_configuration["SubId"]);
+            issuerModel.DateTime = DateTime.Now;
 
-            return View("Issuer", pageIssuerListModel);
+            issuerModel.SetIssuersDropDownList();
+
+            return View("Issuer", issuerModel);
+        }
+
+        [HttpPost]
+        public IActionResult RequestTransaction(TransactionModel transactionModel)
+        {
+            transactionModel.IssuerAuthenticationValid =
+                TryValidateModel(transactionModel) && transactionModel.SetTransactionModel();
+
+            transactionModel.MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]);
+            transactionModel.SubId = HttpUtility.HtmlEncode(_configuration["SubId"]);
+
+
+            return View("Transaction", transactionModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult TransactionStatus(string trxid, string ec)
+        {
+            var transactionStatusModel = new TransactionStatusModel
+            {
+                TransactionId = trxid,
+                MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]),
+                SubId = HttpUtility.HtmlEncode(_configuration["SubId"])
+            };
+
+            return View(transactionStatusModel);
+        }
+
+        [HttpPost]
+        public IActionResult TransactionStatus(TransactionStatusModel transactionStatusModel)
+        {
+            transactionStatusModel.MerchantId = HttpUtility.HtmlEncode(_configuration["MerchantId"]);
+            transactionStatusModel.SubId = HttpUtility.HtmlEncode(_configuration["SubId"]);
+
+            RequestTransactionStatus(transactionStatusModel);
+
+            return View("TransactionStatus", transactionStatusModel);
+        }
+
+        private static void RequestTransactionStatus(TransactionStatusModel transactionStatusModel)
+        {
+            try
+            {
+                var connector = Connector.CreateConnector(merchantId: transactionStatusModel.MerchantId, merchantSubId: transactionStatusModel.SubId);
+                var transaction = connector.RequestTransactionStatus(transactionStatusModel.TransactionId);
+
+                transactionStatusModel.AcquirerId = transaction.AcquirerId;
+                transactionStatusModel.TransactionStatus = transaction.Status.ToString();
+                transactionStatusModel.ConsumerName = transaction.ConsumerName;
+                transactionStatusModel.Fingerprint = transaction.Fingerprint;
+                transactionStatusModel.ConsumerIban = transaction.ConsumerIBAN;
+                transactionStatusModel.ConsumerBic = transaction.ConsumerBIC;
+                transactionStatusModel.Amount = transaction.Amount.ToString(CultureInfo.InvariantCulture);
+                transactionStatusModel.Currency = transaction.Currency;
+
+                var signatureString = ByteArrayToHexString(transaction.SignatureValue);
+
+                // Place newlines in Hex String
+                for (var i = 512; i > 0; i -= 32)
+                {
+                    signatureString = signatureString.Substring(0, i) + " " + signatureString.Substring(i);
+                }
+
+                transactionStatusModel.SignatureValue = signatureString;
+            }
+            catch (IDealException ex)
+            {
+                //LabelErrorValue.Text = ex.ErrorRes.Error.consumerMessage;
+            }
+        }
+
+        private static string ByteArrayToHexString(byte[] bytes)
+        {
+            return string.Join(string.Empty, bytes.Select(b => b.ToString("X2")));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

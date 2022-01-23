@@ -5,7 +5,7 @@
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="PageRequestTransaction">
+<form asp-action="RequestTransaction">
   <div  class="detail-container">
     Functie-parameters:<br />
     <div class="row field-row">
@@ -72,7 +72,7 @@
   </div>
   &nbsp;
   <div class="detail-container detail-centered">
-    <button asp-area="" asp-controller="Home" asp-action="PageRequestTransaction" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Request Transaction</button>
+    <button asp-area="" asp-controller="Home" class="action-button" asp-action="RequestTransaction">Request Transaction</button>
   </div>
   &nbsp;
   <div class="detail-container">
@@ -93,16 +93,16 @@
   &nbsp;
 </form>
 <div class="detail-container detail-centered">
-  @if (Model!.IssuerAuthenticationValid)
-  {
-    <a href='@Model.IssuerAuthenticationUrl' style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">
-      <button style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">Issuer Authentication</button>
-    </a>
-  }
-  else
-  {
-    <button disabled style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Issuer Authentication</button>
-  }
+  <form method="post" action="@Model!.IssuerAuthenticationUrl">
+    @if (Model!.IssuerAuthenticationValid)
+    {
+      <button class="action-button">Issuer Authentication</button>
+    }
+    else
+    {
+      <button disabled class="action-button">Issuer Authentication</button>
+    }
+  </form>
 </div>
 
 <div>

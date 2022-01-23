@@ -8,13 +8,16 @@ using AutoMapper;
 
 namespace iDealSampleCore.Custom
 {
-    internal static class SelectListExtensions
+    internal static class IssuerExtensions
     {
         private static readonly Mapper _mapper;
 
         private static readonly TimeSpan _oneDay = new(1, 0, 0, 0);
 
-        static SelectListExtensions()
+        private static List<SelectListItem>? _issuerDropDownList;
+        private static readonly object _issuerLockObject = new();
+
+        static IssuerExtensions()
         {
             var config = new MapperConfiguration(cfg =>
             {
@@ -26,7 +29,27 @@ namespace iDealSampleCore.Custom
             _mapper = new Mapper(config);
         }
 
-        public static IssuersDto GetIssuers(this IssuerModel pageIssuerListModel)
+        public static void SetIssuersDropDownList(this IssuerModel issuerModel)
+        {
+            issuerModel.IssuersDropDownList = issuerModel.GetIssuersDropDownList();
+        }
+
+        private static List<SelectListItem> GetIssuersDropDownList(this IssuerModel issuerModel)
+        {
+            if (_issuerDropDownList != null)
+            {
+                return _issuerDropDownList;
+            }
+
+            lock (_issuerLockObject)
+            {
+                return _issuerDropDownList ??= issuerModel
+                    .GetIssuers()
+                    .GetIssuersSelectList();
+            }
+        }
+
+        private static IssuersDto GetIssuers(this IssuerModel issuerModel)
         {
             IssuersDto issuers;
 
@@ -42,7 +65,7 @@ namespace iDealSampleCore.Custom
                 }
             }
 
-            var connector = Connector.CreateConnector(merchantId: pageIssuerListModel.MerchantId, merchantSubId: pageIssuerListModel.SubId, acquirerUrl: pageIssuerListModel.AcquirerUrl);
+            var connector = Connector.CreateConnector(merchantId: issuerModel.MerchantId, merchantSubId: issuerModel.SubId, acquirerUrl: issuerModel.AcquirerUrl);
 
             issuers = connector.GetIssuerList().MapToDto();
 
@@ -53,7 +76,7 @@ namespace iDealSampleCore.Custom
             return issuers;
         }
 
-        public static List<SelectListItem> GetIssuerSelectList(this IssuersDto issuers)
+        private static List<SelectListItem> GetIssuersSelectList(this IssuersDto issuers)
         {
             if (!issuers.Countries.Any())
             {
