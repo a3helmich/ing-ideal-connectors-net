@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model iDealSampleCore.Models.PageIssuerModel
+
+@{
+  ViewData["Title"] = "IAC";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+  <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+    Functie-parameters:<br />
+    (none)
+  </div>
+  &nbsp;
+  <div style="font: 12pt arial;border-style: Solid;font-weight: normal;width: 800px;">
+    Vanuit configuratie:<br />
+    <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px;">
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+        @Html.DisplayNameFor(model => model.MerchantId)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.MerchantId, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+        @Html.DisplayNameFor(model => model.SubId)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.SubId, new { @style = "width:351px;" })
+      </dd>
+      <dt class="col-sm-2" style="display:inline-block;font-weight: normal;width:151px; padding: 0;">
+        @Html.DisplayNameFor(model => model.AcquirerUrl)
+      </dt>
+      <dd class="col-sm-10" style="margin-bottom: 0">
+        @Html.DisplayFor(model => model.AcquirerUrl, new { @style = "width:351px;" })
+      </dd>
+    </dl>
+  </div>
+  &nbsp;
+  <div style="border-style: Solid;width: 800px;horiz-align: center; text-align: center; vertical-align: center;">
+    <a asp-area="" asp-controller="Home" asp-action="GetIssuerList" style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">
+      <button style="display: inline-block; border-width: 1px; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem;">
+        Get Issuer List
+      </button>
+    </a>
+  </div>
+  &nbsp;
+  <form method="post">
+    <div style="font: 12pt arial; border-style: Solid; font-weight: normal; width: 800px;">
+      Resultaat:<br/>
+      <dl class="row" style="margin-bottom: 0; margin-left: 0; width: 900px;">
+        <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 151px; padding: 0;">
+          @Html.DisplayNameFor(model => model.DateTime)
+        </dt>
+        <dd class="col-sm-10" style="margin-bottom: 0">
+          @Html.DisplayFor(model => model.DateTime, new { @style = "width:351px;" })
+        </dd>
+        <br/>
+        <dt class="col-sm-2" style="display: inline-block; font-weight: normal; width: 151px; padding: 0;">
+          @Html.DisplayNameFor(model => model.IssuersDropDownList)
+        </dt>
+        <dd class="col-sm-10" style="margin-bottom: 0">
+          <select asp-items="Model.IssuersDropDownList" asp-for="SelectedIssuerId" style="width: 200px; border-width: 1px; font-size: 14px"></select>
+          <span asp-validation-for="SelectedIssuerId" style="color: red; display: inline;"></span>
+        </dd>
+      </dl>
+    </div>
+    &nbsp;
+    <div style="border-style: Solid; width: 800px; horiz-align: center; text-align: center; vertical-align: center;">
+      <button asp-area="" asp-controller="Home" asp-action="TransActionRequest" style="display: inline-block; font: 10pt arial; font-weight: normal; horiz-align: center; text-align: center; vertical-align: center; padding: .075rem .75rem; margin: 0">Transaction Request</button>
+    </div>
+  </form>
+</div>
+&nbsp;
+<div>
+  <a asp-action="Index">Back to Home</a>
+</div>

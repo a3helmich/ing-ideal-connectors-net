@@ -1,0 +1,113 @@
+﻿@model iDealSampleCore.Models.TransactionModel
+
+@{
+  ViewData["Title"] = "IAC";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="RequestTransaction">
+  <div  class="detail-container">
+    Functie-parameters:<br />
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="IssuerId"></label></div>
+      <div class="col-sm-10 value-field">
+        <input asp-for="IssuerId" class="input-field"/>
+        <span asp-validation-for="IssuerId" class="validation-container"></span>
+      </div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="PurchaseId"></label></div>
+      <div class="col-sm-10 value-field">
+        <input asp-for="PurchaseId" class="input-field"/>
+        <span asp-validation-for="PurchaseId" class="validation-container"></span>
+      </div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="Amount"></label></div>
+      <div class="col-sm-10 value-field">
+        <input asp-for="Amount" class="input-field"/>
+        <span asp-validation-for="Amount" class="validation-container"></span>
+      </div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="Description"></label></div>
+      <div class="col-sm-10 value-field">
+        <input asp-for="Description" class="input-field"/>
+        <span asp-validation-for="Description" class="validation-container"></span>
+      </div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="EntranceCode"></label></div>
+      <div class="col-sm-10 value-field">
+        <input asp-for="EntranceCode" class="input-field"/>
+        <span asp-validation-for="EntranceCode" class="validation-container"></span>
+      </div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="ExpirationPeriod"></label></div>
+      <div class="col-sm-10 value-field">
+        <input asp-for="ExpirationPeriod" class="input-field"/>
+        <span asp-validation-for="ExpirationPeriod" class="validation-container"></span>
+      </div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="MerchantUrl"></label></div>
+      <div class="col-sm-10 value-field">
+        <input asp-for="MerchantUrl" class="input-field small-text"/>
+        <span asp-validation-for="MerchantUrl" class="validation-container"></span>
+      </div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="detail-container">
+    Vanuit configuratie:<br />
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.MerchantId)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.MerchantId)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.SubId)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.SubId)</div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="detail-container detail-centered">
+    <button asp-area="" asp-controller="Home" class="action-button" asp-action="RequestTransaction">Request Transaction</button>
+  </div>
+  &nbsp;
+  <div class="detail-container">
+    Resultaat:<br />
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.AcquirerId)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.AcquirerId)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.TransactionId)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.TransactionId)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.IssuerAuthenticationUrl)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.IssuerAuthenticationUrl)</div>
+    </div>
+  </div>
+  &nbsp;
+</form>
+<div class="detail-container detail-centered">
+  <form method="post" action="@Model!.IssuerAuthenticationUrl">
+    @if (Model!.IssuerAuthenticationValid)
+    {
+      <button class="action-button">Issuer Authentication</button>
+    }
+    else
+    {
+      <button disabled class="action-button">Issuer Authentication</button>
+    }
+  </form>
+</div>
+
+<div>
+  <a asp-action="Index">Back to Home</a>
+</div>
+
+@section Scripts {@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }}
+

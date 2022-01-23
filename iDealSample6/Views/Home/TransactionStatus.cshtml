@@ -1,0 +1,73 @@
+﻿@model iDealSampleCore.Models.TransactionStatusModel
+
+@{
+  ViewData["Title"] = "IAC";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="TransactionStatus">
+  <div class="detail-container">
+    Functie-parameters:<br />
+    <div class="row field-row">
+      <div class="col-sm-2 label-field"><label asp-for="TransactionId"></label></div>
+      <div class="col-sm-10 value-field"><input asp-for="TransactionId" class="input-field"/></div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="detail-container">
+    Vanuit configuratie:<br />
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.MerchantId)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.MerchantId)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.SubId)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.SubId)</div>
+    </div>
+  </div>
+  &nbsp;
+  <div class="detail-container detail-centered">
+    <button asp-area="" asp-controller="Home" asp-action="TransactionStatus" class="action-button">Request Transaction Status</button>
+  </div>
+  &nbsp;
+  <div class="detail-container">
+    Resultaat:<br />
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.AcquirerId)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.AcquirerId)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.TransactionStatus)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.TransactionStatus)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.ConsumerName)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.ConsumerName)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.ConsumerIban)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.ConsumerIban)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.ConsumerBic)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.ConsumerBic)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.Amount)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.Amount)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.Currency)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.Currency)</div>
+    </div>
+    <div class="row field-row">
+      <div class="col-sm-2 label-field">@Html.DisplayNameFor(model => model.SignatureValue)</div>
+      <div class="col-sm-10 value-field">@Html.DisplayFor(model => model.SignatureValue)</div>
+    </div>
+  </div>
+  &nbsp;
+</form>
+
+<div>
+  <a asp-action="Index">Back to Home</a>
+</div>

@@ -1,0 +1,116 @@
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+button {
+  padding: .075rem .75rem;
+  border-width: 2px;
+  border-style: solid;
+  background-color: rgb(239, 239, 239);
+}
+
+  button:disabled {
+    border-color: rgb(195, 195, 195);
+    background-color: rgb(249, 249, 249);
+    color: rgb(195, 195, 195);
+  }
+
+.action-button {
+  font: 10pt arial;
+}
+
+select {
+  -webkit-appearance: menulist;
+  appearance: auto;
+}
+
+.index-cell td {
+  border-style: solid;
+  border-width: 1px;
+  padding: 0 2px 0 2px;
+}
+
+.label-field {
+  padding: 0;
+  width: 151px;
+}
+
+.value-field {
+  padding: 0;
+  padding-left: 30px;
+  width: 351px;
+}
+
+.input-field {
+  border-style: solid;
+  border-width: 1px;
+  width: 351px;
+  height: 20px;
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.small-text {
+  font-size: 13px;
+}
+
+.field-row {
+  margin-bottom: 0; 
+  margin-left: 0;
+}
+
+.select-field {
+  width: 200px;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 14px;
+}
+
+.table-layout {
+  border: 1px;
+}
+
+  .table-layout th, td {
+    padding: 4px;
+    border-spacing: 0;
+    border: 1px;
+  }
+
+.td-align-center {
+  text-align: center;
+}
+
+.detail-container {
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  font: 12pt arial;
+  width: 800px;
+}
+
+.detail-centered {
+  horiz-align: center;
+  text-align: center;
+  vertical-align: center;
+}
+
+.validation-container {
+  color: red;
+  display: inline;
+}
