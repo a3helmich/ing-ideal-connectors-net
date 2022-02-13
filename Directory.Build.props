@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<Version>2022.0.01</Version>
+		<Version>2022.1.00</Version>
     
 		<Authors>Adrie Helmich</Authors>
 		<Copyright>Copyright © ING Group 2007-2017</Copyright>
