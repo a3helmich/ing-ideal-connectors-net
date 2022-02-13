@@ -50,18 +50,3 @@ steps:
     projects: '$(solution)'
     arguments: '-c $(BuildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
     testRunTitle: 'dotnet Test'
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet pack'
-  inputs:
-    command: pack
-    packagesToPack: '$(solution)'
-    nobuild: true
-    verbosityPack: Normal
-    
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet publish nuget.org package'
-  inputs:
-    command: custom
-    custom: nuget
-    arguments: 'push $(Build.ArtifactStagingDirectory)\Konfidence.ing.iDealAdvancedConnector.*.nupkg -s https://api.nuget.org/v3/index.json -k $(vNuGetApiKey) --skip-duplicate'
