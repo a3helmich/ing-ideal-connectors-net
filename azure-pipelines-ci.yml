@@ -6,14 +6,6 @@
 trigger:
 - none
 
-schedules:
-- cron: "0 3 * * *"
-  displayName: nightly build
-  branches:
-    include: 
-    - develop
-  always: true
-
 pool:
   name: 'Default'
 
