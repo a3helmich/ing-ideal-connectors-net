@@ -1,0 +1,67 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+- none
+
+schedules:
+- cron: "0 3 * * *"
+  displayName: nightly build
+  branches:
+    include: 
+    - develop
+  always: true
+
+pool:
+  name: 'Default'
+
+variables:
+  - name: solution
+    value: '**/*.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
+  - group: nuget.org-apikeys
+  - name: vNuGetApiKey
+    value: $[variables.NuGetApiKey]
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  continueOnError: true
+  displayName: 'dotnet core unit test'
+  inputs:
+    command: 'test'
+    projects: '$(solution)'
+    arguments: '-c $(BuildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+    testRunTitle: 'dotnet Test'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  inputs:
+    command: pack
+    packagesToPack: '$(solution)'
+    nobuild: true
+    verbosityPack: Normal
+    
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish nuget.org package'
+  inputs:
+    command: custom
+    custom: nuget
+    arguments: 'push $(Build.ArtifactStagingDirectory)\Konfidence.ing.iDealAdvancedConnector.*.nupkg -s https://api.nuget.org/v3/index.json -k $(vNuGetApiKey) --skip-duplicate'
