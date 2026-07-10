@@ -16,6 +16,7 @@ namespace iDealAdvancedConnector_48.Tests
         }
 
         [TestMethod]
+        [Ignore("Requires a specific certificate (thumbprint B012A9AB7A7C1865EE2CA8E1CD18C5138B827CDB) installed in the build agent's certificate store, not present on KONFIDENCE8.")]
         public void When_connector_RequestTransaction_called_should_return_Transaction()
         {
             // arrange
