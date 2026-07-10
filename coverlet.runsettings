@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<DataCollectionRunSettings>
+		<DataCollectors>
+			<DataCollector friendlyName="XPlat Code Coverage">
+				<Configuration>
+					<ExcludeByAttribute>
+						GeneratedCodeAttribute,
+						CompilerGeneratedAttribute,
+						ExcludeFromCodeCoverageAttribute
+					</ExcludeByAttribute>
+					<ExcludeByFile>
+						**/obj/**/*.cs,
+						**/*.g.cs,
+						**/*.g.i.cs,
+						**/*Designer.cs
+					</ExcludeByFile>
+				</Configuration>
+			</DataCollector>
+		</DataCollectors>
+	</DataCollectionRunSettings>
+</RunSettings>

@@ -1,52 +1,79 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+name: $(date:yyyyMMdd)$(rev:.r)
 
-trigger:
-- none
+trigger: none
 
 schedules:
-- cron: "0 3 * * *"
+- cron: '0 2 * * *'  # 03:00 W. Europe Standard Time (UTC+1)
   displayName: nightly build
   branches:
-    include: 
+    include:
     - develop
   always: true
 
-pool:
-  name: 'Default'
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: Konfidence/yaml.Templates
+    ref: refs/heads/develop
 
 variables:
-  - name: solution
-    value: '**/*.sln'
-  - name: buildPlatform
-    value: 'Any CPU'
-  - name: buildConfiguration
-    value: 'Release'
-  - group: nuget.org-apikeys
-  - name: vNuGetApiKey
-    value: $[variables.NuGetApiKey]
+- template: ComputeVersion.yml@templates
+  parameters:
+    majorVersion: 1
+- name: BuildConfiguration
+  value: release
+- name: BuildPlatform
+  value: 'any cpu'
+- group: nuget.org-apikeys
+
+pool:
+  name: Default
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- checkout: self
+  clean: true
+  fetchDepth: 0
 
 - task: DotNetCoreCLI@2
-  continueOnError: true
-  displayName: 'dotnet core unit test'
+  displayName: 'dotnet restore'
   inputs:
-    command: 'test'
-    projects: '$(solution)'
-    arguments: '-c $(BuildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-    testRunTitle: 'dotnet Test'
+    command: restore
+    projects: 'iDealAdvanced.slnf'
+    verbosityRestore: Normal
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    projects: 'iDealAdvanced.slnf'
+    arguments: '-c $(BuildConfiguration) --no-restore /p:Version=$(year).$(majorVersion).$(minorVersion)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+    projects: 'iDealAdvanced.slnf'
+    arguments: '-c $(BuildConfiguration) --no-build --verbosity normal --collect:"XPlat Code Coverage" --settings coverlet.runsettings'
+    publishTestResults: true
+
+- template: GenerateAndPublishCodeCoverage.yml@templates
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
+  condition: eq(variables['Build.Reason'], 'PullRequest')
+  inputs:
+    command: pack
+    packagesToPack: 'iDealAdvanced.slnf'
+    configurationToPack: '$(BuildConfiguration)'
+    outputDir: '$(Build.ArtifactStagingDirectory)'
+    nobuild: true
+    verbosityPack: Normal
+    buildProperties: 'Version=$(year).$(majorVersion).$(minorVersion)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish nuget.org package'
+  condition: eq(variables['Build.Reason'], 'PullRequest')
+  inputs:
+    command: custom
+    custom: nuget
+    arguments: 'push $(Build.ArtifactStagingDirectory)\Konfidence.ing.iDealAdvancedConnector.*.nupkg -s https://api.nuget.org/v3/index.json -k $(NuGetApiKey) --skip-duplicate'
