@@ -1,0 +1,25 @@
+[*.cs]
+
+# builder configurations
+dotnet_diagnostic.CA1000.severity = warning
+
+csharp_style_prefer_primary_constructors = false
+
+dotnet_style_prefer_collection_expression = false
+
+dotnet_diagnostic.CA1860.severity = none
+
+dotnet_diagnostic.CA1859.severity = none
+
+resharper_convert_to_primary_constructor_highlighting = none
+
+dotnet_diagnostic.IDE0290.severity = none
+
+resharper_csharp_wrap_parameters_style = chop_always
+
+# editor configurations
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+
+csharp_style_prefer_method_group_conversion = false
