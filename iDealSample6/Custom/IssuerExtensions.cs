@@ -1,10 +1,11 @@
-﻿using iDealSampleCore.Models;
+﻿using System.Text.Json;
+using AutoMapper;
+using iDealSampleCore.Dto;
+using iDealSampleCore.Models;
 using ING.iDealAdvanced;
 using ING.iDealAdvanced.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Text.Json;
-using iDealSampleCore.Dto;
-using AutoMapper;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace iDealSampleCore.Custom
 {
@@ -15,7 +16,7 @@ namespace iDealSampleCore.Custom
         private static readonly TimeSpan _oneDay = new(1, 0, 0, 0);
 
         private static List<SelectListItem>? _issuerDropDownList;
-        private static readonly object _issuerLockObject = new();
+        private static readonly Lock _issuerLockObject = new();
 
         static IssuerExtensions()
         {
@@ -24,63 +25,68 @@ namespace iDealSampleCore.Custom
                 cfg.CreateMap<Issuers, IssuersDto>();
                 cfg.CreateMap<Issuer, IssuerDto>();
                 cfg.CreateMap<Country, CountryDto>();
-            });
+            }, new NullLoggerFactory());
 
             _mapper = new Mapper(config);
         }
+        private static readonly JsonSerializerOptions jsonSerializerOptions = new(JsonSerializerDefaults.Web);
 
-        public static void SetIssuersDropDownList(this IssuerModel issuerModel)
+        extension(IssuerModel issuerModel)
         {
-            issuerModel.IssuersDropDownList = issuerModel.GetIssuersDropDownList();
-        }
-
-        private static List<SelectListItem> GetIssuersDropDownList(this IssuerModel issuerModel)
-        {
-            if (_issuerDropDownList != null)
+            public void SetIssuersDropDownList()
             {
-                return _issuerDropDownList;
+                issuerModel.IssuersDropDownList = issuerModel.GetIssuersDropDownList();
             }
 
-            lock (_issuerLockObject)
+            private List<SelectListItem> GetIssuersDropDownList()
             {
-                return _issuerDropDownList ??= issuerModel
-                    .GetIssuers()
-                    .GetIssuersSelectList();
-            }
-        }
-
-        private static IssuersDto GetIssuers(this IssuerModel issuerModel)
-        {
-            IssuersDto issuers;
-
-            if (File.Exists("issuers.json"))
-            {
-                var issuersText = File.ReadAllText("issuers.json");
-
-                var existingIssuers = JsonSerializer.Deserialize<IssuersDto>(issuersText, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-
-                if (existingIssuers != null  && DateTime.Now - existingIssuers.DateTimestamp < _oneDay)
+                if (_issuerDropDownList != null)
                 {
-                    return existingIssuers;
+                    return _issuerDropDownList;
+                }
+
+                lock (_issuerLockObject)
+                {
+                    return _issuerDropDownList ??= issuerModel
+                        .GetIssuers()
+                        .GetIssuersSelectList();
                 }
             }
 
-            var connector = Connector.CreateConnector(merchantId: issuerModel.MerchantId, merchantSubId: issuerModel.SubId, acquirerUrl: issuerModel.AcquirerUrl);
 
-            issuers = connector.GetIssuerList().MapToDto();
+            private IssuersDto GetIssuers()
+            {
+                IssuersDto issuers;
 
-            string newIssuersText = JsonSerializer.Serialize(issuers, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+                if (File.Exists("issuers.json"))
+                {
+                    var issuersText = File.ReadAllText("issuers.json");
 
-            File.WriteAllText("issuers.json", newIssuersText);
+                    var existingIssuers = JsonSerializer.Deserialize<IssuersDto>(issuersText, jsonSerializerOptions);
 
-            return issuers;
+                    if (existingIssuers != null && DateTime.Now - existingIssuers.DateTimestamp < _oneDay)
+                    {
+                        return existingIssuers;
+                    }
+                }
+
+                var connector = Connector.CreateConnector(merchantId: issuerModel.MerchantId, merchantSubId: issuerModel.SubId, acquirerUrl: issuerModel.AcquirerUrl);
+
+                issuers = connector.GetIssuerList().MapToDto();
+
+                string newIssuersText = JsonSerializer.Serialize(issuers, jsonSerializerOptions);
+
+                File.WriteAllText("issuers.json", newIssuersText);
+
+                return issuers;
+            }
         }
 
         private static List<SelectListItem> GetIssuersSelectList(this IssuersDto issuers)
         {
             if (!issuers.Countries.Any())
             {
-                return new List<SelectListItem>();
+                return [];
             }
 
             var issuerSelectItemList = new List<SelectListItem> {
