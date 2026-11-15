@@ -24,11 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Prepare.Utils", "Test.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iDealAdvancedConnector_48.Tests", "Test\iDealAdvancedConnector_48.Tests\iDealAdvancedConnector_48.Tests.csproj", "{A9A8B1DE-B9E4-40FB-99D6-3E0BAB61DF87}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iDealAdvancedConnector_core31.Tests", "Test\iDealAdvancedConnector_core31.Tests\iDealAdvancedConnector_core31.Tests.csproj", "{A8B5CA6E-3642-4A66-BB44-95D234E5E39E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iDealAdvancedConnector_10_0.Tests", "Test\iDealAdvancedConnector_60.Tests\iDealAdvancedConnector_10_0.Tests.csproj", "{EB200E6D-E065-425D-9EC8-955E1834FB97}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iDealSample3.1", "iDealSample3.1\iDealSample3.1.csproj", "{C1B29EC3-CFA0-4575-89A4-5A06E92BA87E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iDealSample10", "iDealSample6\iDealSample10.csproj", "{7DCE1656-424C-48A7-9F18-998AE1678643}"
 EndProject
@@ -56,14 +52,10 @@ Global
 		{A9A8B1DE-B9E4-40FB-99D6-3E0BAB61DF87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9A8B1DE-B9E4-40FB-99D6-3E0BAB61DF87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A8B1DE-B9E4-40FB-99D6-3E0BAB61DF87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8B5CA6E-3642-4A66-BB44-95D234E5E39E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8B5CA6E-3642-4A66-BB44-95D234E5E39E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB200E6D-E065-425D-9EC8-955E1834FB97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB200E6D-E065-425D-9EC8-955E1834FB97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB200E6D-E065-425D-9EC8-955E1834FB97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB200E6D-E065-425D-9EC8-955E1834FB97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1B29EC3-CFA0-4575-89A4-5A06E92BA87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1B29EC3-CFA0-4575-89A4-5A06E92BA87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DCE1656-424C-48A7-9F18-998AE1678643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7DCE1656-424C-48A7-9F18-998AE1678643}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DCE1656-424C-48A7-9F18-998AE1678643}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,7 +67,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{851E549F-BE27-4D62-82B9-5F9B7C29CDDB} = {E79062D8-7A9A-4F27-98A6-0D5720015F0A}
 		{A9A8B1DE-B9E4-40FB-99D6-3E0BAB61DF87} = {E79062D8-7A9A-4F27-98A6-0D5720015F0A}
-		{A8B5CA6E-3642-4A66-BB44-95D234E5E39E} = {E79062D8-7A9A-4F27-98A6-0D5720015F0A}
 		{EB200E6D-E065-425D-9EC8-955E1834FB97} = {E79062D8-7A9A-4F27-98A6-0D5720015F0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
