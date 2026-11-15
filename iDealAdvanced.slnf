@@ -2,11 +2,11 @@
   "solution": {
     "path": "iDealAdvanced.sln",
     "projects": [
-      "iDealAdvancedConnector\\iDealAdvancedConnector.csproj",
-      "iDealSampleConsole\\iDealSampleConsole.csproj",
       "Test.Prepare.Utils\\Test.Prepare.Utils.csproj",
       "Test\\iDealAdvancedConnector_48.Tests\\iDealAdvancedConnector_48.Tests.csproj",
-      "iDealSample6\\iDealSample10.csproj"
+      "iDealAdvancedConnector\\iDealAdvancedConnector.csproj",
+      "iDealSample6\\iDealSample10.csproj",
+      "iDealSampleConsole\\iDealSampleConsole.csproj"
     ]
   }
 }
