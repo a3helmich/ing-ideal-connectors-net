@@ -5,6 +5,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
+#if NET
+using System.Net.Http;
+using System.Threading;
+#endif
 using System.Security;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
@@ -444,7 +448,7 @@ namespace ING.iDealAdvanced
             // Validate respons
             ValidateXML(xmlRespons);
 
-            if (!XmlSignature.XmlSignature.CheckSignature(xmlRespons, (RSA)merchantConfig.aquirerCertificate.PublicKey.Key))
+            if (!XmlSignature.XmlSignature.CheckSignature(xmlRespons, merchantConfig.aquirerCertificate.GetRSAPublicKey()))
             {
                 Trace.WriteLine("Xml response was not well signed " + xmlRespons);
                 throw new ArgumentException("Response from server is not well signed");
@@ -521,7 +525,7 @@ namespace ING.iDealAdvanced
             // Validate respons
             ValidateXML(xmlResponse);
 
-            if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, (RSA)merchantConfig.aquirerCertificate.PublicKey.Key))
+            if (!XmlSignature.XmlSignature.CheckSignature(xmlResponse, merchantConfig.aquirerCertificate.GetRSAPublicKey()))
             {
                 Trace.WriteLine("Xml response was not well signed " + xmlResponse);
                 throw new ArgumentException("Response from server is not well signed");
@@ -573,42 +577,9 @@ namespace ING.iDealAdvanced
             try
             {
                 byte[] bytesToSend = encoding.GetBytes(request);
+                string contentType = Format("text/xml; charset=\"{0}\"", encoding.WebName);
 
-                // Send the xml to remote server
-                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-
-#if RUNNING_ON_4_5
-                // Bypass service certificate validation
-                var disableAcquirerSSLCertificateValidation = GetOptionalAppSetting("DisableAcquirerSSLCertificateValidation", "False");
-                if (disableAcquirerSSLCertificateValidation.ToLowerInvariant().Equals("true"))
-                {
-                    httpWebRequest.ServerCertificateValidationCallback += DisableAcquirerSSLCertificateValidation;
-                }                            
-#endif
-
-                // Set timeout in milliseconds (ms)
-                httpWebRequest.Timeout = merchantConfig.acquirerTimeout * 1000;
-
-                // Do a HTTP POST, content is the xml message
-                httpWebRequest.Method = "POST";
-                httpWebRequest.ContentType =
-                    Format("text/xml; charset=\"{0}\"", encoding.WebName);
-                httpWebRequest.ContentLength = bytesToSend.Length;
-
-                using (Stream sendStream = httpWebRequest.GetRequestStream())
-                {
-                    sendStream.Write(bytesToSend, 0, bytesToSend.Length);
-                }
-
-                // Get the response from the server
-                WebResponse response = httpWebRequest.GetResponse();
-
-                // Create a readable stream
-                using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
-                {
-                    // Read in all the server answer
-                    reply = sr.ReadToEnd();
-                }
+                reply = PostToAcquirer(bytesToSend, contentType, url, merchantConfig.acquirerTimeout);
             }
             catch (Exception e)
             {
@@ -622,6 +593,67 @@ namespace ING.iDealAdvanced
             if (traceSwitch.TraceVerbose) TraceLine(Format("Returnvalue: {0}", reply));
             return reply;
         }
+
+#if NET
+        private static readonly HttpClient acquirerClient = new HttpClient { Timeout = System.Threading.Timeout.InfiniteTimeSpan };
+
+        /// <summary>
+        /// Posts the content to the acquirer and returns the reply, read as UTF-8.
+        /// </summary>
+        internal static string PostToAcquirer(byte[] content, string contentType, Uri url, int timeoutSeconds)
+        {
+            using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new ByteArrayContent(content) };
+            request.Content.Headers.TryAddWithoutValidation("Content-Type", contentType);
+
+            using CancellationTokenSource timeout = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds));
+            using HttpResponseMessage response = acquirerClient.Send(request, timeout.Token);
+            response.EnsureSuccessStatusCode();
+
+            using StreamReader reader = new StreamReader(response.Content.ReadAsStream(timeout.Token), Encoding.UTF8);
+            return reader.ReadToEnd();
+        }
+#else
+        /// <summary>
+        /// Posts the content to the acquirer and returns the reply, read as UTF-8.
+        /// </summary>
+        internal static string PostToAcquirer(byte[] content, string contentType, Uri url, int timeoutSeconds)
+        {
+            // Send the xml to remote server
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+
+#if RUNNING_ON_4_5
+            // Bypass service certificate validation
+            var disableAcquirerSSLCertificateValidation = GetOptionalAppSetting("DisableAcquirerSSLCertificateValidation", "False");
+            if (disableAcquirerSSLCertificateValidation.ToLowerInvariant().Equals("true"))
+            {
+                httpWebRequest.ServerCertificateValidationCallback += DisableAcquirerSSLCertificateValidation;
+            }
+#endif
+
+            // Set timeout in milliseconds (ms)
+            httpWebRequest.Timeout = timeoutSeconds * 1000;
+
+            // Do a HTTP POST, content is the xml message
+            httpWebRequest.Method = "POST";
+            httpWebRequest.ContentType = contentType;
+            httpWebRequest.ContentLength = content.Length;
+
+            using (Stream sendStream = httpWebRequest.GetRequestStream())
+            {
+                sendStream.Write(content, 0, content.Length);
+            }
+
+            // Get the response from the server
+            WebResponse response = httpWebRequest.GetResponse();
+
+            // Create a readable stream
+            using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+            {
+                // Read in all the server answer
+                return sr.ReadToEnd();
+            }
+        }
+#endif
 
 #if RUNNING_ON_4_5
         /// <summary>
@@ -735,7 +767,7 @@ namespace ING.iDealAdvanced
                 var useCertificateWithEnhancedAESCryptoProvider = GetOptionalAppSetting("UseCertificateWithEnhancedAESCryptoProvider", "False");
                 if (useCertificateWithEnhancedAESCryptoProvider.ToLowerInvariant().Equals("true"))
                 {
-                    rsa = (RSA) merchantConfig.ClientCertificate.PrivateKey;
+                    rsa = GetClientPrivateKey(merchantConfig.ClientCertificate);
                 }
                 else
                 {
@@ -754,7 +786,7 @@ namespace ING.iDealAdvanced
                     //The following line may fail if PrivateKey throws an Exception
                     //If the exception is "keyset not found" then check if the hosted website runs on IIS impersonation level
                     //Go to the certificate and manage private keys and add read access to the website application pool.
-                    rsa.FromXmlString(merchantConfig.ClientCertificate.PrivateKey.ToXmlString(true));
+                    rsa.FromXmlString(GetClientPrivateKey(merchantConfig.ClientCertificate).ToXmlString(true));
                 }
             }
             catch (CryptographicException ex)
@@ -768,6 +800,15 @@ namespace ING.iDealAdvanced
             }
 
             return rsa;
+        }
+
+        internal static RSA GetClientPrivateKey(X509Certificate2 certificate)
+        {
+#if NET
+            return certificate.GetRSAPrivateKey();
+#else
+            return (RSA)certificate.PrivateKey;
+#endif
         }
 
 

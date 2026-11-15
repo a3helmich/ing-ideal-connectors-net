@@ -76,7 +76,7 @@ namespace ING.iDealAdvanced.Security
         ///     Construct an RSAPKCS1SHA256SignatureDescription object. The default settings for this object
         ///     are:
         ///     <list type="bullet">
-        ///         <item>Digest algorithm - <see cref="SHA256Managed" /></item>
+        ///         <item>Digest algorithm - <see cref="SHA256" /></item>
         ///         <item>Key algorithm - <see cref="RSACryptoServiceProvider" /></item>
         ///         <item>Formatter algorithm - <see cref="RSAPKCS1SignatureFormatter" /></item>
         ///         <item>Deformatter algorithm - <see cref="RSAPKCS1SignatureDeformatter" /></item>
@@ -85,7 +85,7 @@ namespace ING.iDealAdvanced.Security
         public RSAPKCS1SHA256SignatureDescription()
         {
             KeyAlgorithm = typeof(RSACryptoServiceProvider).AssemblyQualifiedName;
-            DigestAlgorithm = typeof(SHA256Managed).AssemblyQualifiedName;   // Note - SHA256CryptoServiceProvider is not registered with CryptoConfig
+            DigestAlgorithm = "SHA256";
             FormatterAlgorithm = typeof(RSAPKCS1SignatureFormatter).AssemblyQualifiedName;
             DeformatterAlgorithm = typeof(RSAPKCS1SignatureDeformatter).AssemblyQualifiedName;
         }

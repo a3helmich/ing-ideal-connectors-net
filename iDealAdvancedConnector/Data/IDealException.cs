@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+#if !NET
 using System.Security.Permissions;
 using System.Runtime.Serialization;
+#endif
 using System.Text;
 
 
@@ -51,11 +53,13 @@ namespace ING.iDealAdvanced.Data
 
         private AcquirerErrorRes errorRes;
 
+#if !NET
         private IDealException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             errorRes = SerializationHelper.DeserializeObject<AcquirerErrorRes>(info.GetString("errorRes"));
         }
+#endif
 
         /// <summary>
         /// The <see cref="ErrorRes" /> data received from iDEAL, containing the iDEAL error data..
@@ -65,6 +69,7 @@ namespace ING.iDealAdvanced.Data
             get { return errorRes; }
         }
 
+#if !NET
         /// <summary>
         /// Override the GetObjectData method to serialize custom values.
         /// </summary>
@@ -78,6 +83,7 @@ namespace ING.iDealAdvanced.Data
             info.AddValue("errorRes", SerializationHelper.SerializeObject<AcquirerErrorRes>(errorRes));
             base.GetObjectData(info, context);
         }
+#endif
 
     }
 }
